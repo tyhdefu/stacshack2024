@@ -250,9 +250,10 @@ function fight(attacker, move, target) {
             }
         }
         console.log(type, ": ", attack_result, "dmg");
+        dmg += attack_result;
     }
+    console.log("Target took ", dmg, "dmg");
     target.hp -= dmg;
-    console.log("Target took ", target, "dmg");
     updateMonsterHp(PLAYER_1_MONSTER, 1);
     updateMonsterHp(PLAYER_2_MONSTER, 2);
 }
