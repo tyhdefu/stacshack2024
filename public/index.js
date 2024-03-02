@@ -47,7 +47,7 @@ async function run() {
 
     function generateRandomIndexes() {
         const indexes = [];
-        while (indexes.length < 3) {
+        while (indexes.length < 4) {
             const randomIndex = Math.floor(Math.random() * monsterData.monsters.length - 1) + 1;
             if (!indexes.includes(randomIndex)) {
                 indexes.push(randomIndex);
@@ -86,6 +86,9 @@ async function run() {
     const randomIndexes2 = generateRandomIndexes();
     createButtons("sprites1", 3, randomIndexes, monsterData);
     createButtons("sprites2", 3, randomIndexes2, monsterData);
+    // Use last element of indexes for the current monster.
+    setDeployedMonster(createMonster(randomIndexes[3], monsterData, moveData), 1);
+    setDeployedMonster(createMonster(randomIndexes2[3], monsterData, moveData), 2);
 }
 
 let PLAYER_1_MONSTER = null;
