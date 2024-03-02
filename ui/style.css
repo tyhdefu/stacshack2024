@@ -1,0 +1,64 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+#battle-container {
+    border: 2px solid #000;
+    background-color: #fff;
+    width: 800px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top */
+    margin: 50px auto;
+}
+
+.pokemon-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    width: 350px;
+    height: 500px;
+}
+
+.hp-bar {
+    background-color: #f00;
+    height: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#middle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px; /* Adjust the margin as needed */
+}
+
+#textbox {
+    margin-top: 10px; /* Adjust the margin as needed */
+    padding: 8px;
+    font-size: 12px;
+}
+
+.move-button {
+    padding: 8px 16px;
+    margin: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+#middle-button {
+    padding: 8px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
