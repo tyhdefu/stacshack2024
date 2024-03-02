@@ -23,15 +23,22 @@ async function run() {
     selectButton1.addEventListener("click", () => deployMonster(3, 1));
     selectButton2.addEventListener("click", () => deployMonster(4, 2));
 
-    function deployMonster(number, whichImage) {
+    function deployMonster(number, whichPlayer) {
         const selectedMonster = createMonster(number, monsterData, moveData);
-        setDeployedMonster(selectedMonster, whichImage);
+        setDeployedMonster(selectedMonster, whichPlayer);
     }
+
+    document.getElementById("sprites-button1").addEventListener("click", function () {
+        // Call setDeployedMonster with parameters 4 and 1
+        // createMonster(4, monsterData, moveData)
+        deployMonster(1, 1);
+    });
 
 }
 
 let PLAYER_1_MONSTER = null;
 let PLAYER_2_MONSTER = null;
+
 function setDeployedMonster(monster, player) {
     console.log("PLAYER", player, "deployed", monster);
     let image = document.getElementById("monster-image" + player);
@@ -59,6 +66,18 @@ document.addEventListener("DOMContentLoaded", function () {
     run();
 });
 
+
+const TYPES_TO_BINARY = {
+    "basic":     0b10000000,
+    "fire":      0b01000000,
+    "water":     0b00100000,
+    "grass":     0b00010000,
+    "rock":      0b00001000,
+    "flying":    0b00000100,
+    "fighting":  0b00000010,
+    "legendary": 0b00000001,
+}
+
 class Monster {
     constructor(id, name, types, sprite_path, max_hp, moves) {
         this.id = id;
@@ -68,6 +87,11 @@ class Monster {
         this.max_hp = max_hp;
         this.hp = max_hp;
         this.moves = moves;
+        this.typesNum = getNumberFromTypes(types);
+    }
+
+    isType(type) {
+        return isTypeFromNum(TYPES_TO_BINARY[type], this.typesNum)
     }
 }
 
@@ -76,7 +100,25 @@ class Move {
         this.id = id;
         this.name = id;
         this.types = types;
+        this.typesNum = getNumberFromTypes(types);
     }
+
+    isType(type) {
+        return isTypeFromNum(TYPES_TO_BINARY[type], this.typesNum)
+    }
+}
+
+function isTypeFromNum(num, typeNum) {
+    return (typeNum & num) !== 0;
+}
+
+function getNumberFromTypes(types) {
+
+    let number = 0;
+    for (const type in types) {
+        number |= TYPES_TO_BINARY[type]
+    }
+    return number;
 }
 
 async function loadMonsterData() {
@@ -111,4 +153,42 @@ function createMove(id, moves) {
         }
     }
     throw new Error("No such move: " + id);
+}
+
+function fight(monster1, move1, monster2, move2) {
+    console.log(monster1, "uses ", move1, ", ", monster2, "uses", move2);
+
+    let p1_dmg = 0;
+    let p2_dmg = 0;
+    for (const type of TYPES_TO_BINARY) {
+        let attack_result = 0;
+
+        if (move1.isType(type)) {
+            attack_result++;
+        }
+        if (move2.isType(type)) {
+            attack_result--;
+        }
+
+        // Add bonuses / defends, but don't begin an attack on a given type.
+        if (attack_result !== 0) {
+            if (monster1.isType(type)) {
+                attack_result++;
+            }
+            if (monster2.isType(type)) {
+                attack_result--;
+            }
+        }
+        console.log(type, ": ", attack_result);
+        if (attack_result > 0) {
+            p1_dmg += attack_result;
+        }
+        if (attack_result < 0) {
+            p2_dmg += -attack_result;
+        }
+    }
+    monster1.hp -= p1_dmg;
+    monster2.hp -= p2_dmg;
+    console.log("P1 took ", p1_dmg, "dmg");
+    console.log("P2 took ", p2_dmg, "dmg");
 }
