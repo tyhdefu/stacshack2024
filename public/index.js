@@ -17,15 +17,14 @@ async function run() {
     console.log(moveData);
     console.log(createMonster(1, monsterData, moveData));
 
-    // Give both players random monsters.
-    function deployRandomMonsters(){
-        const randomMonster1 = getRandomMonster(monsterData, moveData);
-        const randomMonster2 = getRandomMonster(monsterData, moveData);
+    // // Give both players random monsters.
+    // function deployRandomMonsters() {
+    //     const randomMonster1 = getRandomMonster(monsterData, moveData);
+    //     const randomMonster2 = getRandomMonster(monsterData, moveData);
 
         // Update Monster image source
         setDeployedMonster(randomMonster1, 1);
         setDeployedMonster(randomMonster2, 2);
-    }
 
     const selectButton1 = document.getElementById("select-button1");
     const selectButton2 = document.getElementById("select-button2");
@@ -83,6 +82,7 @@ async function run() {
 
         return monsterArray;
     }
+}
 
     indexes = generateRandomIndexes();
     indexes2 = generateRandomIndexes();
@@ -91,7 +91,7 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
-}
+
 
 function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
     const monsterArray = new Array(16);
@@ -116,6 +116,40 @@ function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
 
     return monsterArray;
 }
+
+let timerInterval;
+function startTimer(duration, display) {
+    let timer = duration, minutes, seconds;
+    timerInterval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = "Player " + (TURN_COUNTER % 2 + 1) + ": " + seconds;
+
+        if (--timer < 0) {
+            // You can add any logic here when the timer reaches zero
+            timer = duration; // Reset the timer
+            TURN_COUNTER += 1;
+            restartTimer(); // Restart the timer when it reaches zero
+        }
+    }, 1000);
+}
+
+function restartTimer() {
+    clearInterval(timerInterval); // Stop the current timer
+    const countdownDuration = 20; // Set the duration of the countdown in seconds
+    startTimer(countdownDuration, document.getElementById('seconds'));
+}
+// Set the duration of the countdown in seconds (20 seconds in this case)
+const countdownDuration = 20;
+
+// Get the div where the timer will be displayed
+const display = document.getElementById('seconds');
+
+// Start the countdown timer
+startTimer(countdownDuration, display);
 
 let PLAYER_1_MONSTER = null;
 let PLAYER_2_MONSTER = null;
@@ -162,8 +196,9 @@ function pickMove(moveElement, player) {
         return;
     }
     const move = monster.moves[move_id];
-    fight(monster, move, target);
+    runAttackAnimation(player, monster, move, target);
     TURN_COUNTER += 1;
+    restartTimer(countdownDuration, display)
 }
 
 function getRandomMonster(monsterData, moveData) {
@@ -214,13 +249,13 @@ class Move {
     }
 }
 const TYPES_TO_BINARY = {
-    "basic":     0b10000000,
-    "fire":      0b01000000,
-    "water":     0b00100000,
-    "grass":     0b00010000,
-    "rock":      0b00001000,
-    "flying":    0b00000100,
-    "fighting":  0b00000010,
+    "basic": 0b10000000,
+    "fire": 0b01000000,
+    "water": 0b00100000,
+    "grass": 0b00010000,
+    "rock": 0b00001000,
+    "flying": 0b00000100,
+    "fighting": 0b00000010,
     "legendary": 0b00000001,
 }
 
@@ -271,22 +306,11 @@ function createMove(id, moves) {
 }
 
 function fight(attacker, move, target) {
-    const BASE_DMG = 4;
     console.log(attacker, "uses ", move, " against ", target);
 
     let dmg = 0;
     for (const type in TYPES_TO_BINARY) {
-        let attack_result = 0;
-
-        if (move.isType(type)) {
-            attack_result = BASE_DMG;
-            if (attacker.isType(type)) {
-                attack_result *= 2;
-            }
-            if (target.isType(type)) {
-                attack_result = Math.round(attack_result / 3);
-            }
-        }
+        let attack_result = calcDmgResult(attacker.isType(type), move.isType(type), target.isType(type));
         console.log(type, ": ", attack_result, "dmg");
         dmg += attack_result;
     }
@@ -294,6 +318,110 @@ function fight(attacker, move, target) {
     target.hp -= dmg;
     updateMonsterHp(PLAYER_1_MONSTER, 1);
     updateMonsterHp(PLAYER_2_MONSTER, 2);
+}
+
+function calcDmgResult(attackerHasStat, moveHasStat, defenderHasStat) {
+    const BASE_DMG = 4;
+
+    let attack_result = 0;
+
+    if (moveHasStat) {
+        attack_result = BASE_DMG;
+        if (attackerHasStat) {
+            attack_result *= 2;
+        }
+        if (defenderHasStat) {
+            attack_result = Math.round(attack_result / 3);
+        }
+    }
+    return attack_result;
+}
+
+function runAttackAnimation(player, attacker, move, defender) {
+    console.log("PLAYER: ", player);
+    const attackTableContainer = document.getElementById("player" + player + "Attack");
+
+    const table = document.createElement("table");
+    const attackerHeader = document.createElement("th");
+    attackerHeader.innerText = "Attacker";
+    const moveHeader = document.createElement("th");
+    moveHeader.innerText = "Move";
+    const defenderHeader = document.createElement("th");
+    defenderHeader.innerText = "Defender";
+
+    const headerRow = document.createElement("tr");
+    headerRow.append(attackerHeader, moveHeader, defenderHeader);
+    table.append(headerRow);
+
+    for (let i = 0; i < 8; i++) {
+        const mask = 1 << i;
+
+        function createStatNode(hasStat) {
+            const td = document.createElement("td");
+            if (hasStat) {
+                td.innerText = "1";
+                td.style.color = "green";
+            }
+            else {
+                td.innerText = "0";
+            }
+            return td;
+        }
+
+        const row = document.createElement("tr");
+
+        const attackerHasStat = isTypeFromNum(attacker.typesNum, mask);
+        const moveHasStat = isTypeFromNum(move.typesNum, mask);
+        const defenderHasStat = isTypeFromNum(defender.typesNum, mask);
+
+        const dmgResult = calcDmgResult(attackerHasStat, moveHasStat, defenderHasStat);
+
+        const attackerNode = createStatNode(attackerHasStat);
+        attackerNode.classList.add("attacker-value");
+        const moveNode = createStatNode(moveHasStat);
+        moveNode.classList.add("move-value");
+        const defenderNode = createStatNode(defenderHasStat);
+        defenderNode.classList.add("defender-value");
+        defenderNode.dataset["result"] = "" + dmgResult;
+        row.append(attackerNode, moveNode, defenderNode);
+        table.append(row);
+    }
+
+    attackTableContainer.append(table);
+    attackTableContainer.style.display = "block";
+
+    const UPDATE_TO_RESULT_TIMEOUT = 2000;
+    const HIDE_TABLE_TIMEOUT = 3500;
+
+    setTimeout(() => {
+        // Set all defender-value fields to the result
+        attackTableContainer.querySelectorAll(".move-value").forEach(mf => {
+            mf.innerHTML = "";
+        })
+        attackTableContainer.querySelectorAll(".defender-value").forEach(df => {
+            const dmg = df.dataset["result"];
+            df.innerHTML = -parseInt(dmg) + "";
+            if (dmg > 4) {
+                df.style.color = "red";
+            }
+            else if (dmg > 3) {
+                df.style.color = "orange";
+            }
+            else if (dmg > 0) {
+                df.style.color = "gold";
+            }
+            else {
+                df.style.color = "";
+            }
+        })
+    }, UPDATE_TO_RESULT_TIMEOUT);
+
+    setTimeout(() => {
+        attackTableContainer.querySelectorAll("table").forEach(c => c.remove());
+        attackTableContainer.style.visibility = "none";
+        fight(attacker, move, defender);
+    }, HIDE_TABLE_TIMEOUT);
+
 }
 
 let deadMonster;
