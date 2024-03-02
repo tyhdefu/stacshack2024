@@ -2,23 +2,15 @@
 
 let player1;
 let player2;
+let monsterData;
+let moveData;
 
 async function run() {
-    const monsterData = await loadMonsterData();
-    const moveData = await loadMoveData();
+    monsterData = await loadMonsterData();
+    moveData = await loadMoveData();
     console.log(monsterData);
     console.log(moveData);
     console.log(createMonster(1, monsterData, moveData));
-
-    // // Give both players random monsters.
-    // function deployRandomMonsters() {
-    //     const randomMonster1 = getRandomMonster(monsterData, moveData);
-    //     const randomMonster2 = getRandomMonster(monsterData, moveData);
-
-        // Update Monster image source
-        setDeployedMonster(randomMonster1, 1);
-        setDeployedMonster(randomMonster2, 2);
-    }
 
     const selectButton1 = document.getElementById("select-button1");
     const selectButton2 = document.getElementById("select-button2");
@@ -84,7 +76,7 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(randomIndexes[0], monsterData, moveData), 1);
     setDeployedMonster(createMonster(randomIndexes2[0], monsterData, moveData), 2);
-
+}
 
 
 
@@ -447,6 +439,83 @@ function openPopupForSale() {
     textSale.innerHTML = "Does Player " + winningPlayer + " accept the sale?";
 }
 
+function openPopupMenu(){
+    const popupMenu = document.getElementById('popupMenu');
+    const overlayMenu = document.getElementById('overlayMenu');
+    const textMenu = document.getElementById("textMenu");
+
+    popupMenu.style.display = 'block';
+    overlayMenu.style.display = 'block';
+    textMenu.innerHTML = "Select monster you want to buy";
+    createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,12,13,14,15,16], monsterData);
+}
+
+function createButtons(containerId, buttonCount, monsterIdArray) {
+    const monsterArray = new Array(buttonCount);
+    const container = document.getElementById(containerId);
+
+    // Check if the container exists
+    if (!container) {
+        console.error(`Container with ID ${containerId} not found.`);
+        return monsterArray;
+    }
+
+    container.style.textAlign = "center";
+
+    for (let i = 0; i < buttonCount; i++) {
+        const button = document.createElement("button");
+        button.className = "sprite-button";
+        const image = document.createElement("img");
+
+        // Assuming createMonster returns an object with a property sprite_path
+        const monster = createMonster(monsterIdArray[i], monsterData, moveData);
+        monsterArray[i] = monster;
+
+        image.src = monster.sprite_path;
+        image.alt = "Button Image";
+        image.classList.add("extra-monster-image");
+
+        button.appendChild(image);
+
+        // Check if "sprites" + losingPlayer container exists
+        const spriteContainer = document.getElementById("sprites" + losingPlayer);
+        if (!spriteContainer) {
+            console.error(`Container with ID "sprites${losingPlayer}" not found.`);
+            return monsterArray;
+        }
+
+        button.addEventListener("click", () => {
+            console.log("Button clicked");
+            
+            const button1 = document.createElement("button");
+            button1.className = "sprite-button";
+            const image = document.createElement("img");
+
+            // Assuming createMonster returns an object with a property sprite_path
+            const monster = createMonster(monsterIdArray[i], monsterData, moveData);
+
+            image.src = monster.sprite_path;
+            image.alt = "Button Image";
+            image.classList.add("extra-monster-image");
+
+            spriteContainer.appendChild(button1);
+            button1.addEventListener("click", () => {
+                console.log("Inner button clicked");
+                setDeployedMonster(monster, losingPlayer);
+            });
+        });
+
+        button.addEventListener("click", () => {
+            console.log("Outer button clicked");
+            closePopupMenu();
+        });
+
+        container.appendChild(button);
+    }
+
+    return monsterArray;
+}
+
 function closePopup() {
     popup.style.display = 'none';
     overlay.style.display = 'none';
@@ -455,6 +524,11 @@ function closePopup() {
 function closePopupForSale() {
     popupSale.style.display = 'none';
     overlaySale.style.display = 'none';
+}
+
+function closePopupMenu(){
+    popupMenu.style.display = 'none';
+    overlayMenu.style.display = 'none';
 }
 
 const buyButton = document.getElementById('buy');
@@ -483,6 +557,7 @@ function buyNewMonster() {
 
     closePopup();
     closePopupForSale();
+    openPopupMenu();
 }
 
 function exchangeMonster() {
