@@ -9,24 +9,30 @@ body {
     background-color: #fff;
     width: 800px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     margin: 50px auto;
     position: relative;
 }
 
-.attack {
-    display: flex;
-    justify-content: space-between;
-    width: 100%; /* Adjust the width as needed */
+.move-buttons1, .move-buttons2 {
+    margin: 50px;
+    display: block;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
-.player {
-    width: 100%; /* Adjust the width as needed */
-    background-color: #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
+.move-button {
+    padding: 8px 16px;
+    margin: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    border: 2px solid lightgreen;
+    border-radius: 5px;
 }
 
 .monster-container {
@@ -36,9 +42,20 @@ body {
     width: 100%; /* Adjust the width as needed */
     height: 500px;
 }
+.table-container {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    margin-top: 10px; /* Adjust margin as needed */
+}
+
+.table-container table {
+    width: 100%;
+    /* Add any other styles for the table */
+}
 
 .sprite-button {
-    padding: 5% 10%;
+    width: 20%;
     margin: 5px;
     font-size: 12px;
     cursor: pointer;
@@ -103,6 +120,10 @@ body {
     right: 10px; /* Adjust the right value as needed */
 }
 
+.monster-table-pair {
+    width: 40%
+}
+
 #middle-button {
     padding: 8px 16px;
     font-size: 12px;
@@ -122,25 +143,6 @@ body {
     image-rendering: pixelated;
 }
 
-.move-buttons1, .move-buttons2 {
-    margin: 50px;
-    display: block;
-    width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-  
-.move-button {     
-    padding: 8px 16px;     
-    margin: 5px;     
-    font-size: 12px;     
-    cursor: pointer;     
-    background-color: #4caf50;     
-    color: #fff;     
-    border: 2px solid lightgreen;     
-    border-radius: 5px; 
-}
 
 /* Style for popup */
 .popup {
@@ -192,4 +194,9 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
+}
+
+.extra-monster-image {
+    width: 100%;
+    image-rendering: pixelated;
 }

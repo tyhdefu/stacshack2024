@@ -67,9 +67,8 @@ async function run() {
 
             image.src = monster.sprite_path
             image.alt = "Button Image";
-            image.style.width = "100%";
-            image.style.height = "200%";
-        
+            image.classList.add("extra-monster-image")
+
             button.appendChild(image);
             button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
             container.appendChild(button);
@@ -79,9 +78,7 @@ async function run() {
     }
 
     const randomIndexes = generateRandomIndexes();
-    console.log("rI: ", randomIndexes);
     const randomIndexes2 = generateRandomIndexes();
-    console.log("rI2: ", randomIndexes2);
     player1 = new Player(createButtons("sprites1", 4, randomIndexes, monsterData));
     player2 = new Player(createButtons("sprites2", 4, randomIndexes2, monsterData));
     // Use last element of indexes for the current monster.
