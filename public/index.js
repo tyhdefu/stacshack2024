@@ -23,15 +23,22 @@ async function run() {
     selectButton1.addEventListener("click", () => deployMonster(3, 1));
     selectButton2.addEventListener("click", () => deployMonster(4, 2));
 
-    function deployMonster(number, whichImage) {
+    function deployMonster(number, whichPlayer) {
         const selectedMonster = createMonster(number, monsterData, moveData);
-        setDeployedMonster(selectedMonster, whichImage);
+        setDeployedMonster(selectedMonster, whichPlayer);
     }
+
+    document.getElementById("sprites-button1").addEventListener("click", function () {
+        // Call setDeployedMonster with parameters 4 and 1
+        // createMonster(4, monsterData, moveData)
+        deployMonster(1, 1);
+    });
 
 }
 
 let PLAYER_1_MONSTER = null;
 let PLAYER_2_MONSTER = null;
+
 function setDeployedMonster(monster, player) {
     console.log("PLAYER", player, "deployed", monster);
     let image = document.getElementById("monster-image" + player);
