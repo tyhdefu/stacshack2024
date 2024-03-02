@@ -28,11 +28,6 @@ async function run() {
         setDeployedMonster(selectedMonster, whichPlayer);
     }
 
-    // document.getElementById("sprites-button1").addEventListener("click", function () {
-    //     // Call setDeployedMonster with parameters 4 and 1
-    //     // createMonster(4, monsterData, moveData)
-    //     deployMonster(1, 1);
-    // });
 
     const moveButtons1 = document.getElementById("move-buttons1");
     const moveButtons2 = document.getElementById("move-buttons2");
