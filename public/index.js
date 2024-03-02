@@ -62,9 +62,8 @@ async function run() {
 
             image.src = monster.sprite_path
             image.alt = "Button Image";
-            image.style.width = "100%";
-            image.style.height = "200%";
-        
+            image.classList.add("extra-monster-image")
+
             button.appendChild(image);
             button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
             container.appendChild(button);

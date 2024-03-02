@@ -23,16 +23,16 @@ body {
     margin-right: auto;
     text-align: center;
 }
-  
-.move-button {     
-    padding: 8px 16px;     
-    margin: 5px;     
-    font-size: 12px;     
-    cursor: pointer;     
-    background-color: #4caf50;     
-    color: #fff;     
-    border: 2px solid lightgreen;     
-    border-radius: 5px; 
+
+.move-button {
+    padding: 8px 16px;
+    margin: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    border: 2px solid lightgreen;
+    border-radius: 5px;
 }
 
 .monster-container {
@@ -53,8 +53,9 @@ body {
     width: 100%;
     /* Add any other styles for the table */
 }
+
 .sprite-button {
-    padding: 5% 10%;
+    width: 20%;
     margin: 5px;
     font-size: 12px;
     cursor: pointer;
@@ -167,4 +168,9 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
+}
+
+.extra-monster-image {
+    width: 100%;
+    image-rendering: pixelated;
 }
