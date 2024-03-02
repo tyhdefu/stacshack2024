@@ -32,11 +32,17 @@ body {
     height: 500px;
 }
 
-.hp-bar {
+.hp-bar,
+.current-hp {
     background-color: #f00;
     height: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
+}
+
+.current-hp {
+    height: 100%;
+    background-color: green;
 }
 
 #textbox1,

@@ -98,10 +98,12 @@ function setDeployedMonster(monster, player) {
     if (player === 1) {
         PLAYER_1_MONSTER = monster;
         deselectMove(1);
+        updateMonsterHp(PLAYER_1_MONSTER, 1);
     }
     else if (player === 2) {
         PLAYER_2_MONSTER = monster;
         deselectMove(2);
+        updateMonsterHp(PLAYER_2_MONSTER, 2);
     }
     image.src = monster.sprite_path;
     const moveButtons = moves.querySelectorAll(".move-button");
@@ -288,4 +290,14 @@ function fight(monster1, move1, monster2, move2) {
     monster2.hp -= p2_dmg;
     console.log("P1 took ", p1_dmg, "dmg");
     console.log("P2 took ", p2_dmg, "dmg");
+    updateMonsterHp(monster1, 1);
+    updateMonsterHp(monster2, 2);
+}
+
+function updateMonsterHp(monster, player) {
+    const monsterHP = document.querySelector("#monster" + player).querySelector(".current-hp");
+
+    const monsterHPPct = (monster.hp / monster.max_hp) * 100;
+
+    monsterHP.style.width = monsterHPPct + "%";
 }
