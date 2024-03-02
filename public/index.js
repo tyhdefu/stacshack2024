@@ -7,8 +7,6 @@ async function run() {
     console.log(moveData);
     console.log(createMonster(1, monsterData, moveData));
 
-    const middleButton = document.getElementById("middle-button");
-
     // Give both players random monsters.
     function deployRandomMonsters(){
         const randomMonster1 = getRandomMonster(monsterData, moveData);
@@ -18,11 +16,6 @@ async function run() {
         setDeployedMonster(randomMonster1, 1);
         setDeployedMonster(randomMonster2, 2);
     }
-
-    // Event listener for the middle button
-    middleButton.addEventListener("click", function () {
-        deployRandomMonsters()
-    });
 
     const selectButton1 = document.getElementById("select-button1");
     const selectButton2 = document.getElementById("select-button2");
@@ -41,16 +34,19 @@ let PLAYER_1_MONSTER = null;
 let PLAYER_2_MONSTER = null;
 function setDeployedMonster(monster, player) {
     console.log("PLAYER", player, "deployed", monster);
-    let image;
+    let image = document.getElementById("monster-image" + player);
+    let moves = document.getElementById("move-buttons" + player);
     if (player === 1) {
-        image = document.getElementById("monster-image1");
         PLAYER_1_MONSTER = monster;
     }
-    else {
-        image = document.getElementById("monster-image2");
+    else if (player === 2) {
         PLAYER_2_MONSTER = monster;
     }
     image.src = monster.sprite_path;
+    const moveButtons = moves.querySelectorAll(".move-button");
+    for (let i = 0; i < monster.moves.length; i++) {
+        moveButtons.item(i).innerText = monster.moves[i].name
+    }
 }
 
 function getRandomMonster(monsterData, moveData) {
@@ -78,6 +74,7 @@ class Monster {
 class Move {
     constructor(id, types) {
         this.id = id;
+        this.name = id;
         this.types = types;
     }
 }
@@ -113,4 +110,5 @@ function createMove(id, moves) {
             return new Move(move.id, move.types)
         }
     }
+    throw new Error("No such move: " + id);
 }
