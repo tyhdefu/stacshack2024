@@ -2,7 +2,7 @@
   "moves": [
     {
       "id": "basic_attack",
-      "name": "Punch",
+      "name": "Slap",
       "types": [
         "basic"
       ]
@@ -43,10 +43,24 @@
       ]
     },
     {
+      "id": "basic_fighting_attack",
+      "name": "Kick",
+      "types": [
+        "basic", "fighting"
+      ]
+    },
+    {
       "id": "fire_attack",
       "name": "Explosion",
       "types": [
         "fire"
+      ]
+    },
+    {
+      "id": "fire_water_attack",
+      "name": "Scald",
+      "types": [
+        "fire", "water"
       ]
     },
     {
@@ -127,24 +141,31 @@
       ]
     },
     {
-      "id": "rock_attack",
-      "name": "Boulder Bash",
+      "id": "rock_fighting_attack",
+      "name": "Stone Slice",
       "types": [
-        "rock"
+        "rock", "fighting"
+      ]
+    },
+    {
+      "id": "fighting_attack",
+      "name": "Chop",
+      "types": [
+        "fighting"
       ]
     },
     {
       "id": "flying_attack",
       "name": "Diving Crush",
       "types": [
-        "rock"
+        "flying"
       ]
     },
     {
       "id": "legend_attack",
       "name": "Final Stand",
       "types": [
-        "rock"
+        "legend"
       ]
     }
   ]
