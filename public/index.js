@@ -28,11 +28,11 @@ async function run() {
         setDeployedMonster(selectedMonster, whichPlayer);
     }
 
-    document.getElementById("sprites-button1").addEventListener("click", function () {
-        // Call setDeployedMonster with parameters 4 and 1
-        // createMonster(4, monsterData, moveData)
-        deployMonster(1, 1);
-    });
+    // document.getElementById("sprites-button1").addEventListener("click", function () {
+    //     // Call setDeployedMonster with parameters 4 and 1
+    //     // createMonster(4, monsterData, moveData)
+    //     deployMonster(1, 1);
+    // });
 
     const moveButtons1 = document.getElementById("move-buttons1");
     const moveButtons2 = document.getElementById("move-buttons2");
@@ -45,6 +45,44 @@ async function run() {
         b.addEventListener("click", () => pickMove(b, 2));
     })
 
+    function generateRandomIndexes() {
+        const indexes = [];
+        while (indexes.length < 3) {
+            const randomIndex = Math.floor(Math.random() * monsterData.monsters.length - 1) + 1;
+            if (!indexes.includes(randomIndex)) {
+                indexes.push(randomIndex);
+            }
+        }
+        return indexes;
+    }
+
+    function createButtons(containerId, buttonCount, imageIndexArray, monsterData) {
+        const container = document.getElementById(containerId);
+    
+        for (let i = 0; i < buttonCount; i++) {
+            const button = document.createElement("button");
+            button.className = "sprite-button";
+            const image = document.createElement("img");
+    
+            // Ensure that imageIndexArray[i] is within the valid range
+            if (imageIndexArray[i] >= 0 && imageIndexArray[i] < monsterData.monsters.length) {
+                image.src = monsterData.monsters[imageIndexArray[i]][3];
+            } else {
+                console.error("Invalid index in imageIndexArray:", imageIndexArray[i]);
+                continue; // Skip this iteration if the index is invalid
+            }
+    
+            image.alt = "Button Image";
+            button.appendChild(image);
+            button.addEventListener("click", () => deployMonster(imageIndexArray[i] + 1, parseInt(containerId.slice(-1))));
+            container.appendChild(button);
+        }
+    }
+
+    const randomIndexes = generateRandomIndexes();
+    const randomIndexes2 = generateRandomIndexes();
+    createButtons("sprites1", 3, randomIndexes, monsterData);
+    createButtons("sprites2", 3, randomIndexes2, monsterData);
 }
 
 let PLAYER_1_MONSTER = null;
@@ -125,28 +163,16 @@ document.addEventListener("DOMContentLoaded", function () {
     run();
 });
 
-
-const TYPES_TO_BINARY = {
-    "basic":     0b10000000,
-    "fire":      0b01000000,
-    "water":     0b00100000,
-    "grass":     0b00010000,
-    "rock":      0b00001000,
-    "flying":    0b00000100,
-    "fighting":  0b00000010,
-    "legendary": 0b00000001,
-}
-
 class Monster {
     constructor(id, name, types, sprite_path, max_hp, moves) {
         this.id = id;
         this.name = name;
         this.sprite_path = sprite_path;
         this.types = types;
+        this.typesNum = getNumberFromTypes(types);
         this.max_hp = max_hp;
         this.hp = max_hp;
         this.moves = moves;
-        this.typesNum = getNumberFromTypes(types);
     }
 
     isType(type) {
@@ -165,6 +191,16 @@ class Move {
     isType(type) {
         return isTypeFromNum(TYPES_TO_BINARY[type], this.typesNum)
     }
+}
+const TYPES_TO_BINARY = {
+    "basic":     0b10000000,
+    "fire":      0b01000000,
+    "water":     0b00100000,
+    "grass":     0b00010000,
+    "rock":      0b00001000,
+    "flying":    0b00000100,
+    "fighting":  0b00000010,
+    "legendary": 0b00000001,
 }
 
 function isTypeFromNum(num, typeNum) {
