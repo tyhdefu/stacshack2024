@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monster Battle</title>
     <link rel="stylesheet" href="ui/style.css">
+    <link rel="icon" type="image/x-icon" href="/sprites/fire2.png">
 </head>
 
 <body>
 
     <div id="battle-container">
         <div id="monster1" class="monster-container">
-            <div class="hp-bar"></div>
+            <div class="hp-bar">
+                <div class="current-hp"></div>
+            </div>
             <img class="monster-image" id="monster-image1" src="sprites/basic2.png" alt="Monster Image">
             <br>
             <div id="select-button1"></div>
@@ -27,7 +30,9 @@
         </div>
 
         <div id="monster2" class="monster-container">
-            <div class="hp-bar"></div>
+            <div class="hp-bar">
+                <div class="current-hp"></div>
+            </div>
             <img class="monster-image" id="monster-image2" src="sprites/basic1.png" alt="Monster Image">
             <br>
             <div id="select-button2"></div>
