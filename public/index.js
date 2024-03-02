@@ -1,66 +1,67 @@
 "use strict"
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Your Pokemon JSON data
-    fetch("/monsters")
-        .then((res) => res.json())
-        .then((pokemonData) => {
-            // Get DOM elements
-            const middleButton = document.getElementById("middle-button");
-            const pokemonImage1 = document.getElementById("pokemon-image1");
-            const pokemonImage2 = document.getElementById("pokemon-image2");
+async function run() {
+    const monsterData = await loadMonsterData();
+    const moveData = await loadMoveData();
+    console.log(monsterData);
+    console.log(moveData);
+    console.log(createMonster(1, monsterData, moveData));
+
+    const middleButton = document.getElementById("middle-button");
+    const pokemonImage1 = document.getElementById("pokemon-image1");
+    const pokemonImage2 = document.getElementById("pokemon-image2");
 
 
-            // Function to get a random Pokemon from the JSON
-            function getRandomPokemon() {
-                const randomIndex = Math.floor(Math.random() * pokemonData.pokemon.length);
-                return pokemonData.pokemon[randomIndex];
-            }
+    // Function to get a random Pokemon from the JSON
 
-            function selectRandomPokemon(){
-                const randomPokemon1 = getRandomPokemon();
-                const randomPokemon2 = getRandomPokemon();
+    function selectRandomPokemon(){
+        const randomPokemon1 = getRandomPokemon(monsterData);
+        const randomPokemon2 = getRandomPokemon(monsterData);
 
-                // Update Pokemon image source
-                pokemonImage1.src = randomPokemon1[3];
-                pokemonImage2.src = randomPokemon2[3];
-            }
+        // Update Pokemon image source
+        pokemonImage1.src = randomPokemon1[3];
+        pokemonImage2.src = randomPokemon2[3];
+    }
 
-            function pickPockeMon(id1, id2){
-                pokemonImage1.src = "gen1/" + id1 +".png";
-                pokemonImage2.src = "gen1/" + id2 +".png";
-            }
-            // Event listener for the middle button
-            middleButton.addEventListener("click", function () {
-                selectRandomPokemon()
-                // pickPockeMon(1, 2)
-            });
-        })
-});
-
-fetch('/monsters').then(data => data.json()).then((data) => {
-    console.log(data);
+    function pickPockeMon(id1, id2){
+        pokemonImage1.src = "gen1/" + id1 +".png";
+        pokemonImage2.src = "gen1/" + id2 +".png";
+    }
+    // Event listener for the middle button
+    middleButton.addEventListener("click", function () {
+        selectRandomPokemon()
+        // pickPockeMon(1, 2)
+    });
 
     const selectButton1 = document.getElementById("select-button1");
     const selectButton2 = document.getElementById("select-button2");
-    const pokemonImage1 = document.getElementById("pokemon-image1");
-    const pokemonImage2 = document.getElementById("pokemon-image2");
 
     selectButton1.addEventListener("click", () => getPokemon(3, 1));
     selectButton2.addEventListener("click", () => getPokemon(4, 2));
 
     function getPokemon(number, whichImage) {
-        for (let i = 0; i < data.pokemon.length; i++) {
-            if (data["pokemon"][i][0] == number) {
+        for (let i = 0; i < monsterData.pokemon.length; i++) {
+            if (monsterData["pokemon"][i][0] === number) {
                 if (whichImage == 1) {
-                    pokemonImage1.src = data["pokemon"][i][3];
+                    pokemonImage1.src = monsterData["pokemon"][i][3];
                 }
                 else {
-                    pokemonImage2.src = data["pokemon"][i][3];
+                    pokemonImage2.src = monsterData["pokemon"][i][3];
                 }
             }
         }
     }
+
+}
+
+function getRandomPokemon(monsterData) {
+    const randomIndex = Math.floor(Math.random() * monsterData.pokemon.length);
+    return monsterData.pokemon[randomIndex];
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    run();
 });
 
 class Monster {
@@ -105,11 +106,3 @@ function createMove(id, moves) {
         }
     }
 }
-
-loadMonsterData().then((monsterData) => {
-    console.log(monsterData);
-    loadMoveData().then((moveData) => {
-        console.log(moveData);
-        console.log(createMonster(1, monsterData, moveData));
-    })
-})
