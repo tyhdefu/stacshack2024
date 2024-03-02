@@ -92,3 +92,8 @@ body {
 .selected-move {
     background-color: aqua;
 }
+
+.monster-image {
+    width: 6vw;
+    image-rendering: pixelated;
+}

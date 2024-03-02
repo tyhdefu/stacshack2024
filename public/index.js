@@ -56,11 +56,11 @@ function setDeployedMonster(monster, player) {
     let moves = document.getElementById("move-buttons" + player);
     if (player === 1) {
         PLAYER_1_MONSTER = monster;
-        PLAYER_1_SELECTED_MOVE = null;
+        deselectMove(1);
     }
     else if (player === 2) {
         PLAYER_2_MONSTER = monster;
-        PLAYER_2_SELECTED_MOVE = null;
+        deselectMove(2);
     }
     image.src = monster.sprite_path;
     const moveButtons = moves.querySelectorAll(".move-button");
