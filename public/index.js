@@ -28,11 +28,11 @@ async function run() {
         setDeployedMonster(selectedMonster, whichPlayer);
     }
 
-    document.getElementById("sprites-button1").addEventListener("click", function () {
-        // Call setDeployedMonster with parameters 4 and 1
-        // createMonster(4, monsterData, moveData)
-        deployMonster(1, 1);
-    });
+    // document.getElementById("sprites-button1").addEventListener("click", function () {
+    //     // Call setDeployedMonster with parameters 4 and 1
+    //     // createMonster(4, monsterData, moveData)
+    //     deployMonster(1, 1);
+    // });
 
     const moveButtons1 = document.getElementById("move-buttons1");
     const moveButtons2 = document.getElementById("move-buttons2");
@@ -55,7 +55,7 @@ async function run() {
         }
         return indexes;
     }
-    
+
     function createButtons(containerId, buttonCount, imageIndexArray, monsterData) {
         const container = document.getElementById(containerId);
     
@@ -78,7 +78,7 @@ async function run() {
             container.appendChild(button);
         }
     }
-    
+
     const randomIndexes = generateRandomIndexes();
     const randomIndexes2 = generateRandomIndexes();
     createButtons("sprites1", 3, randomIndexes, monsterData);
