@@ -42,7 +42,7 @@ async function run() {
     function generateRandomIndexes() {
         const indexes = [];
         while (indexes.length < 4) {
-            const randomIndex = Math.floor(Math.random() * monsterData.monsters.length - 1) + 1;
+            const randomIndex = Math.floor(Math.random() * (monsterData.monsters.length - 1)) + 1;
             if (!indexes.includes(randomIndex)) {
                 indexes.push(randomIndex);
             }
@@ -50,39 +50,36 @@ async function run() {
         return indexes;
     }
 
-    function createButtons(containerId, buttonCount, imageIndexArray, monsterData) {
+    function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
         const container = document.getElementById(containerId);
         container.style.textAlign = "center";
         for (let i = 0; i < buttonCount; i++) {
             const button = document.createElement("button");
             button.className = "sprite-button";
             const image = document.createElement("img");
-    
-            // Ensure that imageIndexArray[i] is within the valid range
-            if (imageIndexArray[i] >= 0 && imageIndexArray[i] < monsterData.monsters.length) {
-                image.src = monsterData.monsters[imageIndexArray[i]][3];
-            } else {
-                console.error("Invalid index in imageIndexArray:", imageIndexArray[i]);
-                continue; // Skip this iteration if the index is invalid
-            }
-    
+
+            const monster = createMonster(monsterIdArray[i], monsterData, moveData);
+
+            image.src = monster.sprite_path
             image.alt = "Button Image";
             image.style.width = "100%";
             image.style.height = "200%";
         
             button.appendChild(image);
-            button.addEventListener("click", () => deployMonster(imageIndexArray[i] + 1, parseInt(containerId.slice(-1))));
+            button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
             container.appendChild(button);
         }
     }
 
     const randomIndexes = generateRandomIndexes();
+    console.log("rI: ", randomIndexes);
     const randomIndexes2 = generateRandomIndexes();
-    createButtons("sprites1", 3, randomIndexes, monsterData);
-    createButtons("sprites2", 3, randomIndexes2, monsterData);
+    console.log("rI2: ", randomIndexes2);
+    createButtons("sprites1", 4, randomIndexes, monsterData);
+    createButtons("sprites2", 4, randomIndexes2, monsterData);
     // Use last element of indexes for the current monster.
-    setDeployedMonster(createMonster(randomIndexes[3], monsterData, moveData), 1);
-    setDeployedMonster(createMonster(randomIndexes2[3], monsterData, moveData), 2);
+    setDeployedMonster(createMonster(randomIndexes[0], monsterData, moveData), 1);
+    setDeployedMonster(createMonster(randomIndexes2[0], monsterData, moveData), 2);
 }
 
 let PLAYER_1_MONSTER = null;
@@ -94,12 +91,10 @@ function setDeployedMonster(monster, player) {
     let moves = document.getElementById("move-buttons" + player);
     if (player === 1) {
         PLAYER_1_MONSTER = monster;
-        deselectMove(1);
         updateMonsterHp(PLAYER_1_MONSTER, 1);
     }
     else if (player === 2) {
         PLAYER_2_MONSTER = monster;
-        deselectMove(2);
         updateMonsterHp(PLAYER_2_MONSTER, 2);
     }
     image.src = monster.sprite_path;
@@ -109,50 +104,31 @@ function setDeployedMonster(monster, player) {
     }
 }
 
-let PLAYER_1_SELECTED_MOVE = null;
-let PLAYER_2_SELECTED_MOVE = null;
+let TURN_COUNTER = 0;
 
 function pickMove(moveElement, player) {
+    if (TURN_COUNTER % 2 !== (player - 1)) {
+        console.error("Not player " + player + "'s turn!");
+        return;
+    }
     let move_id = moveElement.dataset.num
     let monster;
+    let target;
     if (player === 1) {
         monster = PLAYER_1_MONSTER;
+        target = PLAYER_2_MONSTER;
     }
     else {
         monster = PLAYER_2_MONSTER;
+        target = PLAYER_1_MONSTER;
     }
     if (monster == null) {
-        console.error("No monster selected!");
+        console.error("You must select a monster first!");
         return;
     }
-    deselectMove(player);
-    moveElement.classList.add("selected-move");
-    if (player === 1) {
-        PLAYER_1_SELECTED_MOVE = monster.moves[move_id];
-    }
-    else {
-        PLAYER_2_SELECTED_MOVE = monster.moves[move_id];
-    }
-
-    if (PLAYER_1_SELECTED_MOVE !== null && PLAYER_2_SELECTED_MOVE !== null) {
-        console.log("Both players selected a move, fighting:");
-        fight(PLAYER_1_MONSTER, PLAYER_1_SELECTED_MOVE, PLAYER_2_MONSTER, PLAYER_2_SELECTED_MOVE);
-        deselectMove(1);
-        deselectMove(2);
-    }
-}
-
-function deselectMove(player) {
-    let moveButtons = document.getElementById("move-buttons" + player);
-    moveButtons.querySelectorAll(".selected-move").forEach(m => {
-        m.classList.remove("selected-move");
-    });
-    if (player === 1) {
-        PLAYER_1_SELECTED_MOVE = null;
-    }
-    else {
-        PLAYER_2_SELECTED_MOVE = null;
-    }
+    const move = monster.moves[move_id];
+    fight(monster, move, target);
+    TURN_COUNTER += 1;
 }
 
 function getRandomMonster(monsterData, moveData) {
@@ -252,44 +228,30 @@ function createMove(id, moves) {
     throw new Error("No such move: " + id);
 }
 
-function fight(monster1, move1, monster2, move2) {
-    console.log(monster1, "uses ", move1, ", ", monster2, "uses", move2);
+function fight(attacker, move, target) {
+    const BASE_DMG = 4;
+    console.log(attacker, "uses ", move, " against ", target);
 
-    let p1_dmg = 0;
-    let p2_dmg = 0;
+    let dmg = 0;
     for (const type in TYPES_TO_BINARY) {
         let attack_result = 0;
 
-        if (move1.isType(type)) {
-            attack_result++;
-        }
-        if (move2.isType(type)) {
-            attack_result--;
-        }
-
-        // Add bonuses / defends, but don't begin an attack on a given type.
-        if (attack_result !== 0) {
-            if (monster1.isType(type)) {
-                attack_result++;
+        if (move.isType(type)) {
+            attack_result = BASE_DMG;
+            if (attacker.isType(type)) {
+                attack_result *= 2;
             }
-            if (monster2.isType(type)) {
-                attack_result--;
+            if (target.isType(type)) {
+                attack_result = Math.round(attack_result / 3);
             }
         }
-        console.log(type, ": ", attack_result);
-        if (attack_result > 0) {
-            p1_dmg += attack_result;
-        }
-        if (attack_result < 0) {
-            p2_dmg += -attack_result;
-        }
+        console.log(type, ": ", attack_result, "dmg");
+        dmg += attack_result;
     }
-    monster1.hp -= p1_dmg;
-    monster2.hp -= p2_dmg;
-    console.log("P1 took ", p1_dmg, "dmg");
-    console.log("P2 took ", p2_dmg, "dmg");
-    updateMonsterHp(monster1, 1);
-    updateMonsterHp(monster2, 2);
+    console.log("Target took ", dmg, "dmg");
+    target.hp -= dmg;
+    updateMonsterHp(PLAYER_1_MONSTER, 1);
+    updateMonsterHp(PLAYER_2_MONSTER, 2);
 }
 
 function updateMonsterHp(monster, player) {
