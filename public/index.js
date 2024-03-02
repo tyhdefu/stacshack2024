@@ -2,10 +2,17 @@
 
 let player1;
 let player2;
+let indexes;
+let indexes2;
+let monsterData;
+let moveData;
+let numMonsters1 = 4;
+let numMonsters2 = 4;
+let startingTotal = 100;
 
 async function run() {
-    const monsterData = await loadMonsterData();
-    const moveData = await loadMoveData();
+    monsterData = await loadMonsterData();
+    moveData = await loadMoveData();
     console.log(monsterData);
     console.log(moveData);
     console.log(createMonster(1, monsterData, moveData));
@@ -77,13 +84,37 @@ async function run() {
         return monsterArray;
     }
 
-    const randomIndexes = generateRandomIndexes();
-    const randomIndexes2 = generateRandomIndexes();
-    player1 = new Player(createButtons("sprites1", 4, randomIndexes, monsterData));
-    player2 = new Player(createButtons("sprites2", 4, randomIndexes2, monsterData));
+    indexes = generateRandomIndexes();
+    indexes2 = generateRandomIndexes();
+    player1 = new Player(startingTotal, createButtons("sprites1", numMonsters1, indexes, monsterData));
+    player2 = new Player(startingTotal, createButtons("sprites2", numMonsters2, indexes2, monsterData));
     // Use last element of indexes for the current monster.
-    setDeployedMonster(createMonster(randomIndexes[0], monsterData, moveData), 1);
-    setDeployedMonster(createMonster(randomIndexes2[0], monsterData, moveData), 2);
+    setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
+    setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
+}
+
+function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
+    const monsterArray = new Array(16);
+    const container = document.getElementById(containerId);
+    container.style.textAlign = "center";
+    for (let i = 0; i < buttonCount; i++) {
+        const button = document.createElement("button");
+        button.className = "sprite-button";
+        const image = document.createElement("img");
+
+        const monster = createMonster(monsterIdArray[i], monsterData, moveData);
+        monsterArray[i] = monster;
+
+        image.src = monster.sprite_path
+        image.alt = "Button Image";
+        image.classList.add("extra-monster-image")
+
+        button.appendChild(image);
+        button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
+        container.appendChild(button);
+    }
+
+    return monsterArray;
 }
 
 let PLAYER_1_MONSTER = null;
@@ -146,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 class Player {
-    constructor(monsters) {
-        this.total = 100.00;
+    constructor(total, monsters) {
+        this.total = total;
         this.monsters = monsters;
     }
 }
@@ -340,7 +371,7 @@ const noButton = document.getElementById('no');
 noButton.addEventListener('click', exchangeMonsterNo);
 
 function buyNewMonster() {
-    const monsterValue = 15;
+    const monsterValue = 16;
 
     if (losingPlayer == 1) {
         player1.total -= monsterValue; //Need to allow user to search list of monsters
@@ -362,21 +393,53 @@ function exchangeMonster() {
 function exchangeMonsterYes() {
     if (losingPlayer == 1) {
         player1.total += 0.5 * deadMonster.value;
+        player2.total -= 0.5 * deadMonster.value;
         
-        for (let i = 0; i < player1.monsters.length; i++) {
+        for (let i = 0; i < numMonsters1; i++) {
             if (deadMonster == player1.monsters[i]) {
-                player2.monsters[player2.monsters.length + 1] = deadMonster;
+                player2.monsters[numMonsters2 + 1] = deadMonster;
             }
         }
+
+        const index = indexes.indexOf(deadMonster.id);
+
+        indexes2.push(deadMonster.id);
+        indexes.splice(index, 1);
+
+        document.getElementById("textbox1").innerText = "$" + player1.total;
+        document.getElementById("textbox2").innerText = "$" + player2.total;
+
+        removeButtons("sprites1");
+        removeButtons("sprites2");
+        player1 = new Player(player1.total, createButtons("sprites1", --numMonsters1, indexes, monsterData));
+        player2 = new Player(player2.total, createButtons("sprites2", ++numMonsters2, indexes2, monsterData));
+
+        setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     }
     else {
         player2.total += 0.5 * deadMonster.value;
+        player1.total -= 0.5 * deadMonster.value;
 
-        for (let i = 0; i < player2.monsters.length; i++) {
+        for (let i = 0; i < numMonsters2; i++) {
             if (deadMonster == player2.monsters[i]) {
-                player1.monsters[player1.monsters.length + 1] = deadMonster;
+                player1.monsters[numMonsters1 + 1] = deadMonster;
             }
         }
+
+        document.getElementById("textbox1").innerText = "$" + player1.total;
+        document.getElementById("textbox2").innerText = "$" + player2.total;
+
+        const index = indexes2.indexOf(deadMonster.id);
+
+        indexes.push(deadMonster.id);
+        indexes2.splice(index, 1);
+
+        removeButtons("sprites1");
+        removeButtons("sprites2");
+        player1 = new Player(player1.total, createButtons("sprites1", ++numMonsters1, indexes, monsterData));
+        player2 = new Player(player2.total, createButtons("sprites2", --numMonsters2, indexes2, monsterData));
+
+        setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
     } 
 
     closePopup();
@@ -385,4 +448,12 @@ function exchangeMonsterYes() {
 
 function exchangeMonsterNo() {
     buyNewMonster();
+}
+
+function removeButtons(containerId) {
+    const container = document.getElementById(containerId);
+
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
 }
