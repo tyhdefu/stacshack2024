@@ -17,15 +17,6 @@ async function run() {
     console.log(moveData);
     console.log(createMonster(1, monsterData, moveData));
 
-    // // Give both players random monsters.
-    // function deployRandomMonsters() {
-    //     const randomMonster1 = getRandomMonster(monsterData, moveData);
-    //     const randomMonster2 = getRandomMonster(monsterData, moveData);
-
-        // Update Monster image source
-        setDeployedMonster(randomMonster1, 1);
-        setDeployedMonster(randomMonster2, 2);
-
     const selectButton1 = document.getElementById("select-button1");
     const selectButton2 = document.getElementById("select-button2");
 
@@ -82,7 +73,6 @@ async function run() {
 
         return monsterArray;
     }
-}
 
     indexes = generateRandomIndexes();
     indexes2 = generateRandomIndexes();
@@ -91,7 +81,7 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
-
+}
 
 function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
     const monsterArray = new Array(16);
