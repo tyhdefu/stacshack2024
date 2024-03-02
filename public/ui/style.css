@@ -12,6 +12,7 @@ body {
     justify-content: space-between;
     align-items: flex-start; /* Align items to the top */
     margin: 50px auto;
+    position: relative; /* Add relative positioning to establish a containing block for absolute positioning */
 }
 
 .monster-container {
@@ -36,13 +37,44 @@ body {
     margin-top: 20px; /* Adjust the margin as needed */
 }
 
-#textbox {
-    margin-top: 10px; /* Adjust the margin as needed */
+#textbox1,
+#textbox2 {
+    position: absolute;
+    top: 50px; /* Adjust the top value as needed */
+    width: calc(50% - 20px); /* Set width to 50% of the container with a margin of 10px on each side */
     padding: 8px;
     font-size: 12px;
-    border: 1px solid #ccc; /* Optional border for visual separation */
     border-radius: 5px;
 }
+
+#textbox1 {
+    left: 10px; /* Adjust the left value as needed */
+}
+
+#textbox2 {
+    right: 10px; /* Adjust the right value as needed */
+}
+
+
+#monster-container1,
+#monster-container2 {
+    position: absolute;
+    top: 100px; /* Adjust the top value as needed */
+    width: calc(50% - 420px); /* Set width to 50% of the container with a margin of 10px on each side */
+    height: 500px; /* Adjust the height as needed */
+    background-color: #ddd; /* Set a background color or styles as needed */
+    border: 1px solid #999; /* Optional border for visual separation */
+    border-radius: 5px;
+}
+
+#monster-container1 {
+    left: 10px; /* Adjust the left value as needed */
+}
+
+#monster-container2 {
+    right: 10px; /* Adjust the right value as needed */
+}
+
 
 .move-button {
     padding: 8px 16px;
