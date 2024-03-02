@@ -12,9 +12,9 @@ class Monster {
 }
 
 class Move {
-    constructor(id, type) {
+    constructor(id, types) {
         this.id = id
-        this.type = type
+        this.types = types
     }
 }
 
@@ -28,13 +28,18 @@ async function loadMoveData() {
     return moves.json()
 }
 
-function createMonster(id, monsters, moves) {
-    const monster = data.pokemon[id];
-    return Monster(monster[0], monster[1], monster[2], 30, monster[3])
+function createMonster(id, all_monsters, all_moves) {
+    const monster = all_monsters.pokemon[id];
+    const monster_moves = monster[2].map(m => createMove(m, all_moves))
+    return new Monster(monster[0], monster[1], monster_moves, 30, monster[3])
 }
 
 function createMove(id, moves) {
-    for
+    for (const move of moves.moves) {
+        if (move.id === id) {
+            return new Move(move.id, move.types)
+        }
+    }
 }
 
 loadMonsterData().then((res) => {
