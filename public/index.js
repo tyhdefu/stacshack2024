@@ -15,12 +15,12 @@ async function run() {
     // Function to get a random Pokemon from the JSON
 
     function selectRandomPokemon(){
-        const randomPokemon1 = getRandomPokemon(monsterData);
-        const randomPokemon2 = getRandomPokemon(monsterData);
+        const randomPokemon1 = getRandomPokemon(monsterData, moveData);
+        const randomPokemon2 = getRandomPokemon(monsterData, moveData);
 
         // Update Pokemon image source
-        pokemonImage1.src = randomPokemon1[3];
-        pokemonImage2.src = randomPokemon2[3];
+        pokemonImage1.src = randomPokemon1.sprite_path;
+        pokemonImage2.src = randomPokemon2.sprite_path;
     }
 
     function pickPockeMon(id1, id2){
@@ -40,23 +40,20 @@ async function run() {
     selectButton2.addEventListener("click", () => getPokemon(4, 2));
 
     function getPokemon(number, whichImage) {
-        for (let i = 0; i < monsterData.pokemon.length; i++) {
-            if (monsterData["pokemon"][i][0] === number) {
-                if (whichImage == 1) {
-                    pokemonImage1.src = monsterData["pokemon"][i][3];
-                }
-                else {
-                    pokemonImage2.src = monsterData["pokemon"][i][3];
-                }
-            }
+        const selectedMonster = createMonster(number, monsterData, moveData);
+        if (whichImage === 1) {
+            pokemonImage1.src = selectedMonster.sprite_path;
+        }
+        else {
+            pokemonImage2.src = selectedMonster.sprite_path;
         }
     }
 
 }
 
-function getRandomPokemon(monsterData) {
+function getRandomPokemon(monsterData, moveData) {
     const randomIndex = Math.floor(Math.random() * monsterData.pokemon.length);
-    return monsterData.pokemon[randomIndex];
+    return createMonster(randomIndex + 1, monsterData, moveData);
 }
 
 
@@ -94,7 +91,16 @@ async function loadMoveData() {
 }
 
 function createMonster(id, all_monsters, all_moves) {
-    const monster = all_monsters.pokemon[id];
+    let monster = null;
+    for (const m of all_monsters.pokemon) {
+        if (m[0] === id) {
+            monster = m;
+            break;
+        }
+    }
+    if (monster == null) {
+        throw new Error("No monster with id: " + id);
+    }
     const monster_moves = monster[4].map(m => createMove(m.toLowerCase(), all_moves));
     return new Monster(monster[0], monster[1], monster[2], monster[3], 30, monster_moves);
 }

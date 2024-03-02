@@ -9,15 +9,15 @@
         [6, "Charizard", "Fire", "gen1/6.png", ["fire_attack"]],
         [7, "Squirtle", "Water", "gen1/7.png", ["water_attack"]],
         [8, "Wartortle", "Water", "gen1/8.png", ["water_attack"]],
-        [9, "Blastoise", "Water", "gen1/9.png", [""]],
-        [10, "Butterfree", "Bug", "gen1/12.png"],
-        [11, "Arbok", "Poison", "gen1/24.png"],
-        [12, "Pikachu", "Electric", "gen1/25.png"],
-        [13, "Raichu", "Electric", "gen1/26.png"],
-        [14, "Sandslash", "Ground", "gen1/28.png"],
-        [15, "Alakazam", "Psychic", "gen1/62.png"],
-        [16, "Machamp", "Fighting", "gen1/65.png"],
-        [17, "Kangaskhan", "Normal", "gen1/115.png"],
-        [18, "Dragonite", "Dragon", "gen1/149.png"]
+        [9, "Blastoise", "Water", "gen1/9.png", ["water_attack"]],
+        [10, "Butterfree", "Bug", "gen1/12.png", ["grass_attack"]],
+        [11, "Arbok", "Poison", "gen1/24.png", ["grass_attack"]],
+        [12, "Pikachu", "Electric", "gen1/25.png", ["fire_attack"]],
+        [13, "Raichu", "Electric", "gen1/26.png", ["fire_attack"]],
+        [14, "Sandslash", "Ground", "gen1/28.png", ["fire_attack"]],
+        [15, "Alakazam", "Psychic", "gen1/62.png", ["fire_attack"]],
+        [16, "Machamp", "Fighting", "gen1/65.png", ["rock_attack"]],
+        [17, "Kangaskhan", "Normal", "gen1/115.png", ["rock_attack"]],
+        [18, "Dragonite", "Dragon", "gen1/149.png", ["rock_attack"]]
     ]
 }
