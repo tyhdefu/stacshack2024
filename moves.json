@@ -7,6 +7,12 @@
       ]
     },
     {
+      "id": "fire_attack",
+      "types": [
+        "fire"
+      ]
+    },
+    {
       "id": "grass_attack",
       "types": [
         "grass"

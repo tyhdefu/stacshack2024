@@ -1,0 +1,24 @@
+Bit array types:
+0: Basic
+1: Fire
+2: Water
+3: Grass
+4: Rock
+5: Flying
+6: Fighting
+7: Legendary
+
+== Example: Grass monster ==
+
+          Type    Basic Attack    Grass Attack    Water Attack    Rock Attack
+Basic     1       1               0               0               0
+Fire      0       0               0               0               0
+Water     0       0               0               1               0
+Grass     1       0               1               0               0
+Rock      0       0               0               0               1
+Flying    0       0               0               0               0
+Fighting  0       0               0               0               0
+Legendary 0       0               0               0               0
+
+
+Overflow if Type + Attack?
