@@ -1,0 +1,28 @@
+{
+  "moves": [
+    {
+      "id": "basic_attack",
+      "types": [
+        "basic"
+      ]
+    },
+    {
+      "id": "grass_attack",
+      "types": [
+        "grass"
+      ]
+    },
+    {
+      "id": "water_attack",
+      "types": [
+        "water"
+      ]
+    },
+    {
+      "id": "rock_attack",
+      "types": [
+        "rock"
+      ]
+    }
+  ]
+}
