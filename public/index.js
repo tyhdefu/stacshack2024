@@ -8,50 +8,52 @@ async function run() {
     console.log(createMonster(1, monsterData, moveData));
 
     const middleButton = document.getElementById("middle-button");
-    const pokemonImage1 = document.getElementById("pokemon-image1");
-    const pokemonImage2 = document.getElementById("pokemon-image2");
 
-
-    // Function to get a random Pokemon from the JSON
-
-    function selectRandomPokemon(){
-        const randomPokemon1 = getRandomPokemon(monsterData, moveData);
-        const randomPokemon2 = getRandomPokemon(monsterData, moveData);
+    // Give both players random monsters.
+    function deployRandomMonsters(){
+        const randomPokemon1 = getRandomMonster(monsterData, moveData);
+        const randomPokemon2 = getRandomMonster(monsterData, moveData);
 
         // Update Pokemon image source
-        pokemonImage1.src = randomPokemon1.sprite_path;
-        pokemonImage2.src = randomPokemon2.sprite_path;
+        setDeployedMonster(randomPokemon1, 1);
+        setDeployedMonster(randomPokemon2, 2);
     }
 
-    function pickPockeMon(id1, id2){
-        pokemonImage1.src = "gen1/" + id1 +".png";
-        pokemonImage2.src = "gen1/" + id2 +".png";
-    }
     // Event listener for the middle button
     middleButton.addEventListener("click", function () {
-        selectRandomPokemon()
-        // pickPockeMon(1, 2)
+        deployRandomMonsters()
     });
 
     const selectButton1 = document.getElementById("select-button1");
     const selectButton2 = document.getElementById("select-button2");
 
-    selectButton1.addEventListener("click", () => getPokemon(3, 1));
-    selectButton2.addEventListener("click", () => getPokemon(4, 2));
+    selectButton1.addEventListener("click", () => deployMonster(3, 1));
+    selectButton2.addEventListener("click", () => deployMonster(4, 2));
 
-    function getPokemon(number, whichImage) {
+    function deployMonster(number, whichImage) {
         const selectedMonster = createMonster(number, monsterData, moveData);
-        if (whichImage === 1) {
-            pokemonImage1.src = selectedMonster.sprite_path;
-        }
-        else {
-            pokemonImage2.src = selectedMonster.sprite_path;
-        }
+        setDeployedMonster(selectedMonster, whichImage);
     }
 
 }
 
-function getRandomPokemon(monsterData, moveData) {
+let PLAYER_1_MONSTER = null;
+let PLAYER_2_MONSTER = null;
+function setDeployedMonster(monster, player) {
+    console.log("PLAYER", player, "deployed", monster);
+    let image;
+    if (player === 1) {
+        image = document.getElementById("pokemon-image1");
+        PLAYER_1_MONSTER = monster;
+    }
+    else {
+        image = document.getElementById("pokemon-image2");
+        PLAYER_2_MONSTER = monster;
+    }
+    image.src = monster.sprite_path;
+}
+
+function getRandomMonster(monsterData, moveData) {
     const randomIndex = Math.floor(Math.random() * monsterData.pokemon.length);
     return createMonster(randomIndex + 1, monsterData, moveData);
 }
