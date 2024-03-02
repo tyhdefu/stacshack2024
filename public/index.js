@@ -7,15 +7,15 @@ async function run() {
     console.log(moveData);
     console.log(createMonster(1, monsterData, moveData));
 
-    // Give both players random monsters.
-    function deployRandomMonsters(){
-        const randomMonster1 = getRandomMonster(monsterData, moveData);
-        const randomMonster2 = getRandomMonster(monsterData, moveData);
+    // // Give both players random monsters.
+    // function deployRandomMonsters() {
+    //     const randomMonster1 = getRandomMonster(monsterData, moveData);
+    //     const randomMonster2 = getRandomMonster(monsterData, moveData);
 
-        // Update Pokemon image source
-        setDeployedMonster(randomMonster1, 1);
-        setDeployedMonster(randomMonster2, 2);
-    }
+    //     // Update Pokemon image source
+    //     setDeployedMonster(randomMonster1, 1);
+    //     setDeployedMonster(randomMonster2, 2);
+    // }
 
     const selectButton1 = document.getElementById("select-button1");
     const selectButton2 = document.getElementById("select-button2");
@@ -64,7 +64,7 @@ async function run() {
             image.alt = "Button Image";
             image.style.width = "100%";
             image.style.height = "200%";
-        
+
             button.appendChild(image);
             button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
             container.appendChild(button);
@@ -80,7 +80,43 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(randomIndexes[0], monsterData, moveData), 1);
     setDeployedMonster(createMonster(randomIndexes2[0], monsterData, moveData), 2);
+
+
 }
+
+let timerInterval;
+function startTimer(duration, display) {
+    let timer = duration, minutes, seconds;
+    timerInterval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = "Player " + (TURN_COUNTER % 2 + 1) + ": " + seconds;
+
+        if (--timer < 0) {
+            // You can add any logic here when the timer reaches zero
+            timer = duration; // Reset the timer
+            TURN_COUNTER += 1;
+            restartTimer(); // Restart the timer when it reaches zero
+        }
+    }, 1000);
+}
+
+function restartTimer() {
+    clearInterval(timerInterval); // Stop the current timer
+    const countdownDuration = 20; // Set the duration of the countdown in seconds
+    startTimer(countdownDuration, document.getElementById('seconds'));
+}
+// Set the duration of the countdown in seconds (20 seconds in this case)
+const countdownDuration = 20;
+
+// Get the div where the timer will be displayed
+const display = document.getElementById('seconds');
+
+// Start the countdown timer
+startTimer(countdownDuration, display);
 
 let PLAYER_1_MONSTER = null;
 let PLAYER_2_MONSTER = null;
@@ -129,6 +165,7 @@ function pickMove(moveElement, player) {
     const move = monster.moves[move_id];
     fight(monster, move, target);
     TURN_COUNTER += 1;
+    restartTimer(countdownDuration, display)
 }
 
 function getRandomMonster(monsterData, moveData) {
@@ -172,13 +209,13 @@ class Move {
     }
 }
 const TYPES_TO_BINARY = {
-    "basic":     0b10000000,
-    "fire":      0b01000000,
-    "water":     0b00100000,
-    "grass":     0b00010000,
-    "rock":      0b00001000,
-    "flying":    0b00000100,
-    "fighting":  0b00000010,
+    "basic": 0b10000000,
+    "fire": 0b01000000,
+    "water": 0b00100000,
+    "grass": 0b00010000,
+    "rock": 0b00001000,
+    "flying": 0b00000100,
+    "fighting": 0b00000010,
     "legendary": 0b00000001,
 }
 
@@ -302,7 +339,7 @@ function buyNewMonster() {
 }
 
 function exchangeMonster() {
-    
+
 
     closePopup()
 }
