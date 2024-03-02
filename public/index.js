@@ -1,5 +1,8 @@
 "use strict"
 
+let player1;
+let player2;
+
 async function run() {
     const monsterData = await loadMonsterData();
     const moveData = await loadMoveData();
@@ -12,7 +15,7 @@ async function run() {
         const randomMonster1 = getRandomMonster(monsterData, moveData);
         const randomMonster2 = getRandomMonster(monsterData, moveData);
 
-        // Update Pokemon image source
+        // Update Monster image source
         setDeployedMonster(randomMonster1, 1);
         setDeployedMonster(randomMonster2, 2);
     }
@@ -51,6 +54,7 @@ async function run() {
     }
 
     function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
+        const monsterArray = new Array(16);
         const container = document.getElementById(containerId);
         container.style.textAlign = "center";
         for (let i = 0; i < buttonCount; i++) {
@@ -59,6 +63,7 @@ async function run() {
             const image = document.createElement("img");
 
             const monster = createMonster(monsterIdArray[i], monsterData, moveData);
+            monsterArray[i] = monster;
 
             image.src = monster.sprite_path
             image.alt = "Button Image";
@@ -69,14 +74,16 @@ async function run() {
             button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
             container.appendChild(button);
         }
+
+        return monsterArray;
     }
 
     const randomIndexes = generateRandomIndexes();
     console.log("rI: ", randomIndexes);
     const randomIndexes2 = generateRandomIndexes();
     console.log("rI2: ", randomIndexes2);
-    createButtons("sprites1", 4, randomIndexes, monsterData);
-    createButtons("sprites2", 4, randomIndexes2, monsterData);
+    player1 = new Player(createButtons("sprites1", 4, randomIndexes, monsterData));
+    player2 = new Player(createButtons("sprites2", 4, randomIndexes2, monsterData));
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(randomIndexes[0], monsterData, moveData), 1);
     setDeployedMonster(createMonster(randomIndexes2[0], monsterData, moveData), 2);
@@ -140,6 +147,13 @@ function getRandomMonster(monsterData, moveData) {
 document.addEventListener("DOMContentLoaded", function () {
     run();
 });
+
+class Player {
+    constructor(monsters) {
+        this.total = 100.00;
+        this.monsters = monsters;
+    }
+}
 
 class Monster {
     constructor(id, name, types, sprite_path, max_hp, moves, value) {
@@ -254,6 +268,8 @@ function fight(attacker, move, target) {
     updateMonsterHp(PLAYER_2_MONSTER, 2);
 }
 
+let deadMonster;
+
 function updateMonsterHp(monster, player) {
     const monsterHP = document.querySelector("#monster" + player).querySelector(".current-hp");
 
@@ -262,13 +278,25 @@ function updateMonsterHp(monster, player) {
     if (monsterHPPct <= 0) {
         monsterHP.style.width = "0%";
 
-        die(monster, player);
+        deadMonster = monster;
+        die(player);
     }
 
     monsterHP.style.width = monsterHPPct + "%";
 }
 
-function die(monster, player) {
+let losingPlayer = 0;
+let winningPlayer = 0;
+
+function die(player) {
+    losingPlayer = player;
+    if (losingPlayer == 1) {
+        winningPlayer = 2;
+    }
+    else {
+        winningPlayer = 1;
+    }
+
     window.onload = openPopup(player);
 }
 
@@ -282,9 +310,24 @@ function openPopup(player) {
     text.innerHTML = "Player " + player;
 }
 
+function openPopupForSale() {
+    const popupSale = document.getElementById('popupSale');
+    const overlaySale = document.getElementById('overlaySale');
+    const textSale = document.getElementById("textSale");
+
+    popupSale.style.display = 'block';
+    overlaySale.style.display = 'block';
+    textSale.innerHTML = "Does Player " + winningPlayer + " accept the sale?";
+}
+
 function closePopup() {
     popup.style.display = 'none';
     overlay.style.display = 'none';
+}
+
+function closePopupForSale() {
+    popupSale.style.display = 'none';
+    overlaySale.style.display = 'none';
 }
 
 const buyButton = document.getElementById('buy');
@@ -293,16 +336,56 @@ buyButton.addEventListener('click', buyNewMonster);
 const sellButton = document.getElementById('sell');
 sellButton.addEventListener('click', exchangeMonster);
 
-const total1 = document.getElementById("textBox1");
-const total2 = document.getElementById("textBox2");
+const yesButton = document.getElementById('yes');
+yesButton.addEventListener('click', exchangeMonsterYes);
+
+const noButton = document.getElementById('no');
+noButton.addEventListener('click', exchangeMonsterNo);
 
 function buyNewMonster() {
+    const monsterValue = 15;
 
-    closePopup()
+    if (losingPlayer == 1) {
+        player1.total -= monsterValue; //Need to allow user to search list of monsters
+        //Add monster to assets
+    }
+    else {
+        player2.total -= monsterValue //Need to allow user to search list of monsters
+        //Add monster to assets
+    }
+
+    closePopup();
+    closePopupForSale();
 }
 
 function exchangeMonster() {
-    
+    openPopupForSale();
+}
 
-    closePopup()
+function exchangeMonsterYes() {
+    if (losingPlayer == 1) {
+        player1.total += 0.5 * deadMonster.value;
+        
+        for (let i = 0; i < player1.monsters.length; i++) {
+            if (deadMonster == player1.monsters[i]) {
+                player2.monsters[player2.monsters.length + 1] = deadMonster;
+            }
+        }
+    }
+    else {
+        player2.total += 0.5 * deadMonster.value;
+
+        for (let i = 0; i < player2.monsters.length; i++) {
+            if (deadMonster == player2.monsters[i]) {
+                player1.monsters[player1.monsters.length + 1] = deadMonster;
+            }
+        }
+    } 
+
+    closePopup();
+    closePopupForSale();
+}
+
+function exchangeMonsterNo() {
+    buyNewMonster();
 }
