@@ -42,6 +42,12 @@ body {
     width: 100%; /* Adjust the width as needed */
     height: 500px;
 }
+
+@keyframes attack {
+    from {padding-right: 100%}
+    to {padding-right: 0%}
+}
+
 .table-container {
     width: 100%;
     box-sizing: border-box;
@@ -51,7 +57,21 @@ body {
 
 .table-container table {
     width: 100%;
+    float: right;
+    margin: 0;
+    text-align: left;
     /* Add any other styles for the table */
+}
+
+.table-container table .move-value {
+    animation-name: attack;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    text-align: right;
+}
+
+.table-container table .defender-value {
+    text-align: left;
 }
 
 .sprite-button {
