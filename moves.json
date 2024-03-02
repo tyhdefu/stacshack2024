@@ -2,33 +2,150 @@
   "moves": [
     {
       "id": "basic_attack",
+      "name": "Punch",
       "types": [
         "basic"
       ]
     },
     {
+      "id": "basic_water_attack",
+      "name" : "Water Pistol",
+      "types": [
+        "basic", "water"
+      ]
+    },
+    {
+      "id": "basic_fire_attack",
+      "name" : "Burn",
+      "types": [
+        "basic", "fire"
+      ]
+    },
+    {
+      "id": "basic_grass_attack",
+      "name" : "Leafblower",
+      "types": [
+        "basic", "grass"
+      ]
+    },
+    {
+      "id": "basic_flying_attack",
+      "name": "Peck",
+      "types": [
+        "basic", "flying"
+      ]
+    },
+    {
+      "id": "basic_rock_attack",
+      "name": "Rock Throw",
+      "types": [
+        "basic", "rock"
+      ]
+    },
+    {
       "id": "fire_attack",
+      "name": "Explosion",
       "types": [
         "fire"
       ]
     },
     {
+      "id": "fire_flying_attack",
+      "name": "Solar Strike",
+      "types": [
+        "fire", "flying"
+      ]
+    },
+    {
+      "id": "fire_fighting_attack",
+      "name": "Flame Kick",
+      "types": [
+        "fire", "fighting"
+      ]
+    },
+    {
+      "id": "fire_legend_attack",
+      "name": "Volcanic Death",
+      "types": [
+        "fire", "legend"
+      ]
+    },
+    {
       "id": "grass_attack",
+      "name": "Plant Power",
       "types": [
         "grass"
       ]
     },
     {
+      "id": "grass_fighting_attack",
+      "name": "Leaf Slash",
+      "types": [
+        "grass", "fighting"
+      ]
+    },
+    {
+      "id": "grass_legend_attack",
+      "name": "Forest Fury",
+      "types": [
+        "grass", "legend"
+      ]
+    },
+    {
       "id": "water_attack",
+      "name": "Flood",
       "types": [
         "water"
       ]
     },
     {
+      "id": "water_legend_attack",
+      "name": "Tsunami",
+      "types": [
+        "water", "legend"
+      ]
+    },
+    {
       "id": "rock_attack",
+      "name": "Boulder Bash",
       "types": [
         "rock"
       ]
-    }
+    },
+    {
+      "id": "rock_fire_attack",
+      "name": "Meteor Strike",
+      "types": [
+        "rock", "fire"
+      ]
+    },
+    {
+      "id": "rock_legend_attack",
+      "name": "Earthquake",
+      "types": [
+        "rock", "legend"
+      ]
+    },
+    {
+      "id": "rock_attack",
+      "name": "Boulder Bash",
+      "types": [
+        "rock"
+      ]
+    },
+    {
+      "id": "flying_attack",
+      "name": "Boulder Bash",
+      "types": [
+        "rock"
+      ]
+    },
+    {
+      "id": "legend_attack",
+      "name": "Boulder Bash",
+      "types": [
+        "rock"
+      ]
+    },
   ]
 }
