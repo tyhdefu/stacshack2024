@@ -48,7 +48,7 @@ async function run() {
     function generateRandomIndexes() {
         const indexes = [];
         while (indexes.length < 4) {
-            const randomIndex = Math.floor(Math.random() * monsterData.monsters.length - 1) + 1;
+            const randomIndex = Math.floor(Math.random() * (monsterData.monsters.length - 1)) + 1;
             if (!indexes.includes(randomIndex)) {
                 indexes.push(randomIndex);
             }
@@ -56,39 +56,36 @@ async function run() {
         return indexes;
     }
 
-    function createButtons(containerId, buttonCount, imageIndexArray, monsterData) {
+    function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
         const container = document.getElementById(containerId);
         container.style.textAlign = "center";
         for (let i = 0; i < buttonCount; i++) {
             const button = document.createElement("button");
             button.className = "sprite-button";
             const image = document.createElement("img");
-    
-            // Ensure that imageIndexArray[i] is within the valid range
-            if (imageIndexArray[i] >= 0 && imageIndexArray[i] < monsterData.monsters.length) {
-                image.src = monsterData.monsters[imageIndexArray[i]][3];
-            } else {
-                console.error("Invalid index in imageIndexArray:", imageIndexArray[i]);
-                continue; // Skip this iteration if the index is invalid
-            }
-    
+
+            const monster = createMonster(monsterIdArray[i], monsterData, moveData);
+
+            image.src = monster.sprite_path
             image.alt = "Button Image";
             image.style.width = "100%";
             image.style.height = "200%";
         
             button.appendChild(image);
-            button.addEventListener("click", () => deployMonster(imageIndexArray[i] + 1, parseInt(containerId.slice(-1))));
+            button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
             container.appendChild(button);
         }
     }
 
     const randomIndexes = generateRandomIndexes();
+    console.log("rI: ", randomIndexes);
     const randomIndexes2 = generateRandomIndexes();
-    createButtons("sprites1", 3, randomIndexes, monsterData);
-    createButtons("sprites2", 3, randomIndexes2, monsterData);
+    console.log("rI2: ", randomIndexes2);
+    createButtons("sprites1", 4, randomIndexes, monsterData);
+    createButtons("sprites2", 4, randomIndexes2, monsterData);
     // Use last element of indexes for the current monster.
-    setDeployedMonster(createMonster(randomIndexes[3], monsterData, moveData), 1);
-    setDeployedMonster(createMonster(randomIndexes2[3], monsterData, moveData), 2);
+    setDeployedMonster(createMonster(randomIndexes[0], monsterData, moveData), 1);
+    setDeployedMonster(createMonster(randomIndexes2[0], monsterData, moveData), 2);
 }
 
 let PLAYER_1_MONSTER = null;
