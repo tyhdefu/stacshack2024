@@ -11,18 +11,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Function to get a random Pokemon from the JSON
         function getRandomPokemon() {
-            const randomIndex = Math.floor(Math.random() * 5);
+            const randomIndex = Math.floor(Math.random() * pokemonData.pokemon.length);
             return pokemonData.pokemon[randomIndex];
         }
 
-        // Event listener for the middle button
-        middleButton.addEventListener("click", function () {
+        function selectRandomPokemon(){
             const randomPokemon1 = getRandomPokemon();
             const randomPokemon2 = getRandomPokemon();
 
             // Update Pokemon image source
             pokemonImage1.src = randomPokemon1[3];
             pokemonImage2.src = randomPokemon2[3];
+        }
+
+        function pickPockeMon(id1, id2){
+            pokemonImage1.src = "gen1/" + id1 +".png";
+            pokemonImage2.src = "gen1/" + id2 +".png";
+        }
+        // Event listener for the middle button
+        middleButton.addEventListener("click", function () {
+            selectRandomPokemon()
+            // pickPockeMon(1, 2)
         });
     })
 });
