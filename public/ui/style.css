@@ -15,7 +15,7 @@ body {
     position: relative; /* Add relative positioning to establish a containing block for absolute positioning */
 }
 .sprite-button {
-    padding: 10% 20%;
+    padding: 5% 10%;
     margin: 5px;
     font-size: 12px;
     cursor: pointer;

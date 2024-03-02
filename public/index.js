@@ -73,8 +73,8 @@ async function run() {
             }
     
             image.alt = "Button Image";
-            image.style.width = "200%";
-            image.style.height = "400%";
+            image.style.width = "100%";
+            image.style.height = "200%";
         
             button.appendChild(image);
             button.addEventListener("click", () => deployMonster(imageIndexArray[i] + 1, parseInt(containerId.slice(-1))));
