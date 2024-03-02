@@ -131,7 +131,6 @@ function pickMove(moveElement, player) {
         return;
     }
     const move = monster.moves[move_id];
-    fight(monster, move, target);
     runAttackAnimation(player, monster, move, target);
     TURN_COUNTER += 1;
 }
@@ -354,6 +353,7 @@ function runAttackAnimation(player, attacker, move, defender) {
     setTimeout(() => {
         attackTableContainer.querySelectorAll("table").forEach(c => c.remove());
         attackTableContainer.style.visibility = "none";
+        fight(attacker, move, defender);
     }, HIDE_TABLE_TIMEOUT);
 
 }
