@@ -26,15 +26,15 @@ body {
     text-align: center;
 }
 
-.move-button {     
-    padding: 8px 16px;     
-    margin: 5px;     
-    font-size: 12px;     
-    cursor: pointer;     
-    background-color: #4caf50;     
-    color: #fff;     
-    border: 2px solid lightgreen;     
-    border-radius: 5px; 
+.move-button {
+    padding: 8px 16px;
+    margin: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    border: 2px solid lightgreen;
+    border-radius: 5px;
 }
 
 .monster-container {
@@ -56,8 +56,9 @@ body {
     width: 100%;
     /* Add any other styles for the table */
 }
+
 .sprite-button {
-    padding: 5% 10%;
+    width: 20%;
     margin: 5px;
     font-size: 12px;
     cursor: pointer;
@@ -170,4 +171,35 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
+}
+
+/* Style for popup */
+.popupSale {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid #000000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+/* Style for overlay */
+.overlaySale {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.extra-monster-image {
+    width: 100%;
+    image-rendering: pixelated;
 }
