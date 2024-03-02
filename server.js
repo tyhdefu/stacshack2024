@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 
-const monstersFileData = fs.readFileSync("pokemon.json");
+const monstersFileData = fs.readFileSync("monsters.json");
 const monstersJSON = JSON.parse(monstersFileData);
 
 const movesFileData = fs.readFileSync("moves.json");

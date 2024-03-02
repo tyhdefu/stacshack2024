@@ -11,12 +11,12 @@ async function run() {
 
     // Give both players random monsters.
     function deployRandomMonsters(){
-        const randomPokemon1 = getRandomMonster(monsterData, moveData);
-        const randomPokemon2 = getRandomMonster(monsterData, moveData);
+        const randomMonster1 = getRandomMonster(monsterData, moveData);
+        const randomMonster2 = getRandomMonster(monsterData, moveData);
 
         // Update Pokemon image source
-        setDeployedMonster(randomPokemon1, 1);
-        setDeployedMonster(randomPokemon2, 2);
+        setDeployedMonster(randomMonster1, 1);
+        setDeployedMonster(randomMonster2, 2);
     }
 
     // Event listener for the middle button
@@ -43,18 +43,18 @@ function setDeployedMonster(monster, player) {
     console.log("PLAYER", player, "deployed", monster);
     let image;
     if (player === 1) {
-        image = document.getElementById("pokemon-image1");
+        image = document.getElementById("monster-image1");
         PLAYER_1_MONSTER = monster;
     }
     else {
-        image = document.getElementById("pokemon-image2");
+        image = document.getElementById("monster-image2");
         PLAYER_2_MONSTER = monster;
     }
     image.src = monster.sprite_path;
 }
 
 function getRandomMonster(monsterData, moveData) {
-    const randomIndex = Math.floor(Math.random() * monsterData.pokemon.length);
+    const randomIndex = Math.floor(Math.random() * monsterData.monsters.length);
     return createMonster(randomIndex + 1, monsterData, moveData);
 }
 
@@ -94,7 +94,7 @@ async function loadMoveData() {
 
 function createMonster(id, all_monsters, all_moves) {
     let monster = null;
-    for (const m of all_monsters.pokemon) {
+    for (const m of all_monsters.monsters) {
         if (m[0] === id) {
             monster = m;
             break;
