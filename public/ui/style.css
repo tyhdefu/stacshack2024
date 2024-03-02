@@ -10,10 +10,33 @@ body {
     width: 800px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align items to the top */
+    align-items: center;
     margin: 50px auto;
-    position: relative; /* Add relative positioning to establish a containing block for absolute positioning */
+    position: relative;
 }
+
+.attack {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Adjust the width as needed */
+}
+
+.player {
+    width: 100%; /* Adjust the width as needed */
+    background-color: #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.monster-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    width: 100%; /* Adjust the width as needed */
+    height: 500px;
+}
+
 .sprite-button {
     padding: 5% 10%;
     margin: 5px;
@@ -24,13 +47,7 @@ body {
     border: none;
     border-radius: 5px;
 }
-.monster-container {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    width: 350px;
-    height: 500px;
-}
+
 
 .hp-bar,
 .current-hp {

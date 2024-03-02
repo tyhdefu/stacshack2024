@@ -28,11 +28,6 @@ async function run() {
         setDeployedMonster(selectedMonster, whichPlayer);
     }
 
-    // document.getElementById("sprites-button1").addEventListener("click", function () {
-    //     // Call setDeployedMonster with parameters 4 and 1
-    //     // createMonster(4, monsterData, moveData)
-    //     deployMonster(1, 1);
-    // });
 
     const moveButtons1 = document.getElementById("move-buttons1");
     const moveButtons2 = document.getElementById("move-buttons2");
@@ -87,8 +82,8 @@ async function run() {
     createButtons("sprites1", 3, randomIndexes, monsterData);
     createButtons("sprites2", 3, randomIndexes2, monsterData);
     // Use last element of indexes for the current monster.
-    setDeployedMonster(createMonster(randomIndexes[3], monsterData, moveData), 1);
-    setDeployedMonster(createMonster(randomIndexes2[3], monsterData, moveData), 2);
+    setDeployedMonster(createMonster(randomIndexes[2], monsterData, moveData), 1);
+    setDeployedMonster(createMonster(randomIndexes2[2], monsterData, moveData), 2);
 }
 
 let PLAYER_1_MONSTER = null;
