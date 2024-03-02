@@ -40,6 +40,8 @@ body {
     margin-top: 10px; /* Adjust the margin as needed */
     padding: 8px;
     font-size: 12px;
+    border: 1px solid #ccc; /* Optional border for visual separation */
+    border-radius: 5px;
 }
 
 .move-button {
