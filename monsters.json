@@ -3,19 +3,19 @@
     [
         [1, "Basic 1", "Basic", "sprites/basic1.png", ["basic_attack", "basic_fire_attack", "basic_grass_attack", "basic_water_attack"]],
         [2, "Basic 2", "Basic", "sprites/basic2.png", ["basic_attack", "basic_flying_attack", "basic_rock_attack", "fire_attack"]],
-        [3, "Fight 1", "Fighting", "sprites/fighting1.png", ["fire_fighting_attack", "water_attack", "rock_fighting_attack", "fighting_attack"]],
-        [4, "Fight 2", "Fighting", "sprites/fighting2.png", ["grass_fighting_attack", "grass_attack", "fire_fighting_attack", "fighting_attack"]],
+        [3, "Fight 1", "Fighting", "sprites/fighting1.png", ["fighting_attack", "fire_fighting_attack", "water_attack", "rock_fighting_attack"]],
+        [4, "Fight 2", "Fighting", "sprites/fighting2.png", [ "fighting_attack", "grass_fighting_attack", "grass_attack", "fire_fighting_attack"]],
         [5, "Fire 1", "Fire", "sprites/fire1.png", ["fire_attack", "fire_fighting_attack", "rock_fire_attack", "rock_attack"]],
         [6, "Fire 2", "Fire", "sprites/fire2.png", ["fire_attack", "fire_flying_attack", "fire_legend_attack", "basic_fire_attack"]],
-        [7, "Flying 1", "Flying", "sprites/flying1.png", ["flying_attack", "fire_flying_attack", "basic_attack", "grass_attack"]],
-        [8, "Flying 2", "Flying", "sprites/flying2.png", ["flying_attack", "basic_flying_attack", "water_attack", "basic_flying_attack"]],
+        [7, "Flying 1", "Flying", "sprites/flying1.png", ["flying_attack", "fire_flying_attack", "basic_attack", "flying_water_attack"]],
+        [8, "Flying 2", "Flying", "sprites/flying2.png", ["flying_attack", "basic_flying_attack", "water_attack", "flying_legend_attack"]],
         [9, "Grass 1", "Grass", "sprites/grass1.png", ["grass_attack", "basic_grass_attack", "grass_legend_attack", "water_attack"]],
         [10, "Grass 2", "Grass", "sprites/grass2.png", ["grass_attack", "grass_fighting_attack", "rock_attack", "basic_attack"]],
-        [11, "Legend 1", "Legend", "sprites/legend1.png", ["legend_attack", "fire_legend_attack", "rock_legend_attack", "water_attack"]],
-        [12, "Legend 2", "Legend", "sprites/legend2.png", ["legend_attack", "water_legend_attack", "grass_legend_attack", "flying_attack"]],
+        [11, "Legend 1", "Legend", "sprites/legend1.png", ["legend_attack", "fire_legend_attack", "rock_legend_attack", "fighting_legend_attack"]],
+        [12, "Legend 2", "Legend", "sprites/legend2.png", ["legend_attack", "water_legend_attack", "grass_legend_attack", "flying_legend_attack"]],
         [13, "Rock 1", "Rock", "sprites/rock1.png", ["rock_attack", "rock_fire_attack", "basic_rock_attack", "water_attack"]],
-        [14, "Rock 2", "Rock", "sprites/rock2.png", ["rock_attack", "rock_legend_attack", "basic_rock_attack", "fire_attack"]],
+        [14, "Rock 2", "Rock", "sprites/rock2.png", ["rock_attack", "rock_legend_attack", "basic_rock_attack", "rock_fighting_attack"]],
         [15, "Water 1", "Water", "sprites/water1.png", ["water_attack", "basic_water_attack", "water_legend_attack", "grass_attack"]],
-        [16, "Water 2", "Water", "sprites/water2.png", ["water_attack", "basic_water_attack", "grass_attack", "fire_attack"]]
+        [16, "Water 2", "Water", "sprites/water2.png", ["water_attack", "basic_water_attack", "flying_water_attack", "fire_water_attack"]]
     ]
 }

@@ -155,7 +155,28 @@
       ]
     },
     {
+      "id": "fighting_legend_attack",
+      "name": "Knockout",
+      "types": [
+        "fighting", "legend"
+      ]
+    },
+    {
       "id": "flying_attack",
+      "name": "Peck",
+      "types": [
+        "flying"
+      ]
+    },
+    {
+      "id": "flying_water_attack",
+      "name": "Dive",
+      "types": [
+        "flying"
+      ]
+    },
+    {
+      "id": "flying_legend_attack",
       "name": "Diving Crush",
       "types": [
         "flying"
