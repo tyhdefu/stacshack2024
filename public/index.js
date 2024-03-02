@@ -96,9 +96,9 @@ class Monster {
 }
 
 class Move {
-    constructor(id, types) {
+    constructor(id, name, types) {
         this.id = id;
-        this.name = id;
+        this.name = name;
         this.types = types;
         this.typesNum = getNumberFromTypes(types);
     }
@@ -149,7 +149,7 @@ function createMonster(id, all_monsters, all_moves) {
 function createMove(id, moves) {
     for (const move of moves.moves) {
         if (move.id === id) {
-            return new Move(move.id, move.types)
+            return new Move(move.id, move.name, move.types)
         }
     }
     throw new Error("No such move: " + id);
