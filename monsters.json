@@ -1,0 +1,21 @@
+{
+    "monsters": 
+    [
+        [1, "Basic 1", "Basic", "public/sprites/basic1.png"],
+        [2, "Basic 2", "Basic", "public/sprites/basic2.png"],
+        [3, "Fight 1", "Fighting", "public/sprites/fighting1.png"],
+        [4, "Fight 2", "Fighting", "public/sprites/fighting2.png"],
+        [5, "Fire 1", "Fire", "public/sprites/fire1.png"],
+        [6, "Fire 2", "Fire", "public/sprites/fire2.png"],
+        [7, "Flying 1", "Flying", "public/sprites/flying1.png"],
+        [8, "Flying 2", "Flying", "public/sprites/flying2.png"],
+        [9, "Grass 1", "Grass", "public/sprites/grass1.png"],
+        [10, "Grass 2", "Grass", "public/sprites/grass2.png"],
+        [11, "Legend 1", "Legend", "public/sprites/legend1.png"],
+        [12, "Legend 2", "Legend", "public/sprites/legend2.png"],
+        [13, "Rock 1", "Rock", "public/sprites/rock1.png"],
+        [14, "Rock 2", "Rock", "public/sprites/rock2.png"],
+        [15, "Water 1", "Water", "public/sprites/water1.png"],
+        [16, "Water 2", "Water", "public/sprites/water2.png"]
+    ]
+}
