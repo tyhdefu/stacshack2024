@@ -229,6 +229,7 @@ function createMove(id, moves) {
 }
 
 function fight(attacker, move, target) {
+    const BASE_DMG = 4;
     console.log(attacker, "uses ", move, " against ", target);
 
     let dmg = 0;
@@ -236,12 +237,12 @@ function fight(attacker, move, target) {
         let attack_result = 0;
 
         if (move.isType(type)) {
-            attack_result++;
+            attack_result = BASE_DMG;
             if (attacker.isType(type)) {
-                attack_result++;
+                attack_result *= 2;
             }
             if (target.isType(type)) {
-                attack_result--;
+                attack_result = Math.round(attack_result / 3);
             }
         }
         console.log(type, ": ", attack_result, "dmg");
