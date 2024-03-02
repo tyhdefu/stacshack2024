@@ -71,9 +71,7 @@ async function run() {
     }
 
     const randomIndexes = generateRandomIndexes();
-    console.log("rI: ", randomIndexes);
     const randomIndexes2 = generateRandomIndexes();
-    console.log("rI2: ", randomIndexes2);
     createButtons("sprites1", 4, randomIndexes, monsterData);
     createButtons("sprites2", 4, randomIndexes2, monsterData);
     // Use last element of indexes for the current monster.
