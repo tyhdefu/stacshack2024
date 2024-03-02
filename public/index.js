@@ -167,7 +167,7 @@ function pickMove(moveElement, player) {
         return;
     }
     const move = monster.moves[move_id];
-    fight(monster, move, target);
+    runAttackAnimation(player, monster, move, target);
     TURN_COUNTER += 1;
     restartTimer(countdownDuration, display)
 }
@@ -277,22 +277,11 @@ function createMove(id, moves) {
 }
 
 function fight(attacker, move, target) {
-    const BASE_DMG = 4;
     console.log(attacker, "uses ", move, " against ", target);
 
     let dmg = 0;
     for (const type in TYPES_TO_BINARY) {
-        let attack_result = 0;
-
-        if (move.isType(type)) {
-            attack_result = BASE_DMG;
-            if (attacker.isType(type)) {
-                attack_result *= 2;
-            }
-            if (target.isType(type)) {
-                attack_result = Math.round(attack_result / 3);
-            }
-        }
+        let attack_result = calcDmgResult(attacker.isType(type), move.isType(type), target.isType(type));
         console.log(type, ": ", attack_result, "dmg");
         dmg += attack_result;
     }
@@ -300,6 +289,110 @@ function fight(attacker, move, target) {
     target.hp -= dmg;
     updateMonsterHp(PLAYER_1_MONSTER, 1);
     updateMonsterHp(PLAYER_2_MONSTER, 2);
+}
+
+function calcDmgResult(attackerHasStat, moveHasStat, defenderHasStat) {
+    const BASE_DMG = 4;
+
+    let attack_result = 0;
+
+    if (moveHasStat) {
+        attack_result = BASE_DMG;
+        if (attackerHasStat) {
+            attack_result *= 2;
+        }
+        if (defenderHasStat) {
+            attack_result = Math.round(attack_result / 3);
+        }
+    }
+    return attack_result;
+}
+
+function runAttackAnimation(player, attacker, move, defender) {
+    console.log("PLAYER: ", player);
+    const attackTableContainer = document.getElementById("player" + player + "Attack");
+
+    const table = document.createElement("table");
+    const attackerHeader = document.createElement("th");
+    attackerHeader.innerText = "Attacker";
+    const moveHeader = document.createElement("th");
+    moveHeader.innerText = "Move";
+    const defenderHeader = document.createElement("th");
+    defenderHeader.innerText = "Defender";
+
+    const headerRow = document.createElement("tr");
+    headerRow.append(attackerHeader, moveHeader, defenderHeader);
+    table.append(headerRow);
+
+    for (let i = 0; i < 8; i++) {
+        const mask = 1 << i;
+
+        function createStatNode(hasStat) {
+            const td = document.createElement("td");
+            if (hasStat) {
+                td.innerText = "1";
+                td.style.color = "green";
+            }
+            else {
+                td.innerText = "0";
+            }
+            return td;
+        }
+
+        const row = document.createElement("tr");
+
+        const attackerHasStat = isTypeFromNum(attacker.typesNum, mask);
+        const moveHasStat = isTypeFromNum(move.typesNum, mask);
+        const defenderHasStat = isTypeFromNum(defender.typesNum, mask);
+
+        const dmgResult = calcDmgResult(attackerHasStat, moveHasStat, defenderHasStat);
+
+        const attackerNode = createStatNode(attackerHasStat);
+        attackerNode.classList.add("attacker-value");
+        const moveNode = createStatNode(moveHasStat);
+        moveNode.classList.add("move-value");
+        const defenderNode = createStatNode(defenderHasStat);
+        defenderNode.classList.add("defender-value");
+        defenderNode.dataset["result"] = "" + dmgResult;
+        row.append(attackerNode, moveNode, defenderNode);
+        table.append(row);
+    }
+
+    attackTableContainer.append(table);
+    attackTableContainer.style.display = "block";
+
+    const UPDATE_TO_RESULT_TIMEOUT = 2000;
+    const HIDE_TABLE_TIMEOUT = 3500;
+
+    setTimeout(() => {
+        // Set all defender-value fields to the result
+        attackTableContainer.querySelectorAll(".move-value").forEach(mf => {
+            mf.innerHTML = "";
+        })
+        attackTableContainer.querySelectorAll(".defender-value").forEach(df => {
+            const dmg = df.dataset["result"];
+            df.innerHTML = -parseInt(dmg) + "";
+            if (dmg > 4) {
+                df.style.color = "red";
+            }
+            else if (dmg > 3) {
+                df.style.color = "orange";
+            }
+            else if (dmg > 0) {
+                df.style.color = "gold";
+            }
+            else {
+                df.style.color = "";
+            }
+        })
+    }, UPDATE_TO_RESULT_TIMEOUT);
+
+    setTimeout(() => {
+        attackTableContainer.querySelectorAll("table").forEach(c => c.remove());
+        attackTableContainer.style.visibility = "none";
+        fight(attacker, move, defender);
+    }, HIDE_TABLE_TIMEOUT);
+
 }
 
 let deadMonster;
@@ -399,7 +492,7 @@ function exchangeMonster() {
 function exchangeMonsterYes() {
     if (losingPlayer == 1) {
         player1.total += 0.5 * deadMonster.value;
-        
+
         for (let i = 0; i < player1.monsters.length; i++) {
             if (deadMonster == player1.monsters[i]) {
                 player2.monsters[player2.monsters.length + 1] = deadMonster;
@@ -414,7 +507,7 @@ function exchangeMonsterYes() {
                 player1.monsters[player1.monsters.length + 1] = deadMonster;
             }
         }
-    } 
+    }
 
     closePopup();
     closePopupForSale();
