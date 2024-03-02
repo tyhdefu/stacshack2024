@@ -10,14 +10,14 @@
         [7, "Squirtle", "Water", "gen1/7.png"],
         [8, "Wartortle", "Water", "gen1/8.png"],
         [9, "Blastoise", "Water", "gen1/9.png"],
-        [12, "Butterfree", "Bug", "gen1/12.png"],
-        [24, "Arbok", "Poison", "gen1/24.png"],
-        [25, "Pikachu", "Electric", "gen1/25.png"],
-        [26, "Raichu", "Electric", "gen1/26.png"],
-        [28, "Sandslash", "Ground", "gen1/28.png"],
-        [62, "Alakazam", "Psychic", "gen1/62.png"],
-        [65, "Machamp", "Fighting", "gen1/65.png"],
-        [115, "Kangaskhan", "Normal", "gen1/115.png"],
-        [149, "Dragonite", "Dragon", "gen1/149.png"]
+        [10, "Butterfree", "Bug", "gen1/12.png"],
+        [11, "Arbok", "Poison", "gen1/24.png"],
+        [12, "Pikachu", "Electric", "gen1/25.png"],
+        [13, "Raichu", "Electric", "gen1/26.png"],
+        [14, "Sandslash", "Ground", "gen1/28.png"],
+        [15, "Alakazam", "Psychic", "gen1/62.png"],
+        [16, "Machamp", "Fighting", "gen1/65.png"],
+        [17, "Kangaskhan", "Normal", "gen1/115.png"],
+        [18, "Dragonite", "Dragon", "gen1/149.png"]
     ]
 }
