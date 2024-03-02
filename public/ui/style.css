@@ -88,3 +88,7 @@ body {
     border: none;
     border-radius: 5px;
 }
+
+.selected-move {
+    background-color: aqua;
+}

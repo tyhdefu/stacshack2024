@@ -34,6 +34,17 @@ async function run() {
         deployMonster(1, 1);
     });
 
+    const moveButtons1 = document.getElementById("move-buttons1");
+    const moveButtons2 = document.getElementById("move-buttons2");
+
+    moveButtons1.querySelectorAll(".move-button").forEach(b => {
+        b.addEventListener("click", () => pickMove(b, 1));
+    })
+
+    moveButtons2.querySelectorAll(".move-button").forEach(b => {
+        b.addEventListener("click", () => pickMove(b, 2));
+    })
+
 }
 
 let PLAYER_1_MONSTER = null;
@@ -45,14 +56,62 @@ function setDeployedMonster(monster, player) {
     let moves = document.getElementById("move-buttons" + player);
     if (player === 1) {
         PLAYER_1_MONSTER = monster;
+        PLAYER_1_SELECTED_MOVE = null;
     }
     else if (player === 2) {
         PLAYER_2_MONSTER = monster;
+        PLAYER_2_SELECTED_MOVE = null;
     }
     image.src = monster.sprite_path;
     const moveButtons = moves.querySelectorAll(".move-button");
     for (let i = 0; i < monster.moves.length; i++) {
         moveButtons.item(i).innerText = monster.moves[i].name
+    }
+}
+
+let PLAYER_1_SELECTED_MOVE = null;
+let PLAYER_2_SELECTED_MOVE = null;
+
+function pickMove(moveElement, player) {
+    let move_id = moveElement.dataset.num
+    let monster;
+    if (player === 1) {
+        monster = PLAYER_1_MONSTER;
+    }
+    else {
+        monster = PLAYER_2_MONSTER;
+    }
+    if (monster == null) {
+        console.error("No monster selected!");
+        return;
+    }
+    deselectMove(player);
+    moveElement.classList.add("selected-move");
+    if (player === 1) {
+        PLAYER_1_SELECTED_MOVE = monster.moves[move_id];
+    }
+    else {
+        PLAYER_2_SELECTED_MOVE = monster.moves[move_id];
+    }
+
+    if (PLAYER_1_SELECTED_MOVE !== null && PLAYER_2_SELECTED_MOVE !== null) {
+        console.log("Both players selected a move, fighting:");
+        fight(PLAYER_1_MONSTER, PLAYER_1_SELECTED_MOVE, PLAYER_2_MONSTER, PLAYER_2_SELECTED_MOVE);
+        deselectMove(1);
+        deselectMove(2);
+    }
+}
+
+function deselectMove(player) {
+    let moveButtons = document.getElementById("move-buttons" + player);
+    moveButtons.querySelectorAll(".selected-move").forEach(m => {
+        m.classList.remove("selected-move");
+    });
+    if (player === 1) {
+        PLAYER_1_SELECTED_MOVE = null;
+    }
+    else {
+        PLAYER_2_SELECTED_MOVE = null;
     }
 }
 
@@ -113,9 +172,8 @@ function isTypeFromNum(num, typeNum) {
 }
 
 function getNumberFromTypes(types) {
-
     let number = 0;
-    for (const type in types) {
+    for (const type of types) {
         number |= TYPES_TO_BINARY[type]
     }
     return number;
@@ -160,7 +218,7 @@ function fight(monster1, move1, monster2, move2) {
 
     let p1_dmg = 0;
     let p2_dmg = 0;
-    for (const type of TYPES_TO_BINARY) {
+    for (const type in TYPES_TO_BINARY) {
         let attack_result = 0;
 
         if (move1.isType(type)) {
