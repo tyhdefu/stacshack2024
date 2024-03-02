@@ -28,7 +28,6 @@ async function run() {
         setDeployedMonster(selectedMonster, whichPlayer);
     }
 
-
     const moveButtons1 = document.getElementById("move-buttons1");
     const moveButtons2 = document.getElementById("move-buttons2");
 
@@ -143,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 class Monster {
-    constructor(id, name, types, sprite_path, max_hp, moves) {
+    constructor(id, name, types, sprite_path, max_hp, moves, value) {
         this.id = id;
         this.name = name;
         this.sprite_path = sprite_path;
@@ -152,6 +151,7 @@ class Monster {
         this.max_hp = max_hp;
         this.hp = max_hp;
         this.moves = moves;
+        this.value = value;
     }
 
     isType(type) {
@@ -216,7 +216,7 @@ function createMonster(id, all_monsters, all_moves) {
         throw new Error("No monster with id: " + id);
     }
     const monster_moves = monster[4].map(m => createMove(m.toLowerCase(), all_moves));
-    return new Monster(monster[0], monster[1], monster[2], monster[3], 30, monster_moves);
+    return new Monster(monster[0], monster[1], monster[2], monster[3], 30, monster_moves, monster[5]);
 }
 
 function createMove(id, moves) {
@@ -229,6 +229,7 @@ function createMove(id, moves) {
 }
 
 function fight(attacker, move, target) {
+    const BASE_DMG = 4;
     console.log(attacker, "uses ", move, " against ", target);
 
     let dmg = 0;
@@ -236,12 +237,12 @@ function fight(attacker, move, target) {
         let attack_result = 0;
 
         if (move.isType(type)) {
-            attack_result++;
+            attack_result = BASE_DMG;
             if (attacker.isType(type)) {
-                attack_result++;
+                attack_result *= 2;
             }
             if (target.isType(type)) {
-                attack_result--;
+                attack_result = Math.round(attack_result / 3);
             }
         }
         console.log(type, ": ", attack_result, "dmg");
@@ -258,5 +259,50 @@ function updateMonsterHp(monster, player) {
 
     const monsterHPPct = (monster.hp / monster.max_hp) * 100;
 
+    if (monsterHPPct <= 0) {
+        monsterHP.style.width = "0%";
+
+        die(monster, player);
+    }
+
     monsterHP.style.width = monsterHPPct + "%";
+}
+
+function die(monster, player) {
+    window.onload = openPopup(player);
+}
+
+function openPopup(player) {
+    const popup = document.getElementById('popup');
+    const overlay = document.getElementById('overlay');
+    const text = document.getElementById("text");
+
+    popup.style.display = 'block';
+    overlay.style.display = 'block';
+    text.innerHTML = "Player " + player;
+}
+
+function closePopup() {
+    popup.style.display = 'none';
+    overlay.style.display = 'none';
+}
+
+const buyButton = document.getElementById('buy');
+buyButton.addEventListener('click', buyNewMonster);
+
+const sellButton = document.getElementById('sell');
+sellButton.addEventListener('click', exchangeMonster);
+
+const total1 = document.getElementById("textBox1");
+const total2 = document.getElementById("textBox2");
+
+function buyNewMonster() {
+
+    closePopup()
+}
+
+function exchangeMonster() {
+    
+
+    closePopup()
 }
