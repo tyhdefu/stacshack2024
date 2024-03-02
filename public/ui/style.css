@@ -14,7 +14,16 @@ body {
     margin: 50px auto;
     position: relative; /* Add relative positioning to establish a containing block for absolute positioning */
 }
+.sprite-button {
+    padding: 10% 20%;
+    margin: 5px;
+    font-size: 12px;
+    cursor: pointer;
 
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
 .monster-container {
     padding: 20px;
     background-color: #fff;
@@ -53,8 +62,8 @@ body {
 #monster-container2 {
     position: absolute;
     top: 80px; /* Adjust the top value as needed */
-    width: calc(50% - 420px); /* Set width to 50% of the container with a margin of 10px on each side */
-    height: 510px; /* Adjust the height as needed */
+    width: calc(47% - 420px); /* Set width to 50% of the container with a margin of 10px on each side */
+    height: 45%; /* Adjust the height as needed */
     background-color: #ddd; /* Set a background color or styles as needed */
     border: 1px solid #999; /* Optional border for visual separation */
     border-radius: 5px;

@@ -58,7 +58,7 @@ async function run() {
 
     function createButtons(containerId, buttonCount, imageIndexArray, monsterData) {
         const container = document.getElementById(containerId);
-    
+        container.style.textAlign = "center";
         for (let i = 0; i < buttonCount; i++) {
             const button = document.createElement("button");
             button.className = "sprite-button";
@@ -73,6 +73,9 @@ async function run() {
             }
     
             image.alt = "Button Image";
+            image.style.width = "200%";
+            image.style.height = "400%";
+        
             button.appendChild(image);
             button.addEventListener("click", () => deployMonster(imageIndexArray[i] + 1, parseInt(containerId.slice(-1))));
             container.appendChild(button);
