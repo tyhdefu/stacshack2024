@@ -1,7 +1,7 @@
 {
     "monsters": 
     [
-        [1, "Basic 1", "Basic", "sprites/basic1.png"],
+        [1, "Basic 1", "Basic", "sprites/basic1.png", ["basic_attack"]],
         [2, "Basic 2", "Basic", "sprites/basic2.png"],
         [3, "Fight 1", "Fighting", "sprites/fighting1.png"],
         [4, "Fight 2", "Fighting", "sprites/fighting2.png"],

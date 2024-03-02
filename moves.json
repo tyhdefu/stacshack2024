@@ -135,14 +135,14 @@
     },
     {
       "id": "flying_attack",
-      "name": "Boulder Bash",
+      "name": "Diving Crush",
       "types": [
         "rock"
       ]
     },
     {
       "id": "legend_attack",
-      "name": "Boulder Bash",
+      "name": "Final Stand",
       "types": [
         "rock"
       ]
