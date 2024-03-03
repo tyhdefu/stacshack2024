@@ -9,9 +9,12 @@ let moveData;
 let numMonsters1 = 4;
 let numMonsters2 = 4;
 let startingTotal = 100;
-let TURN_COUNTER = 0;
+let TURN_COUNTER = -1;
+let MOVE_IN_PROGRESS = false;
 
 async function run() {
+    advanceTurn();
+
     monsterData = await loadMonsterData();
     moveData = await loadMoveData();
     console.log(monsterData);
@@ -118,12 +121,12 @@ function startTimer(duration, display) {
 
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
-        display.textContent = "Player " + (TURN_COUNTER % 2 + 1) + ": " + seconds;
+        display.textContent = "Player " + (getCurrentPlayer()) + ": " + seconds;
 
         if (--timer < 0) {
             // You can add any logic here when the timer reaches zero
             timer = duration; // Reset the timer
-            TURN_COUNTER += 1;
+            advanceTurn();
             restartTimer(); // Restart the timer when it reaches zero
         }
 
@@ -170,8 +173,26 @@ function setDeployedMonster(monster, player) {
     }
 }
 
+function getCurrentPlayer() {
+    return (TURN_COUNTER % 2) + 1;
+}
+
+function advanceTurn() {
+    console.log("Current player: ", getCurrentPlayer());
+    const lastMoveButtons = document.querySelectorAll("#move-buttons" + getCurrentPlayer() + " .move-button");
+    lastMoveButtons.forEach(b => b.classList.remove("move-active"))
+    TURN_COUNTER += 1;
+
+    const newMoveButtons = document.querySelectorAll("#move-buttons" + getCurrentPlayer() + " .move-button");
+    newMoveButtons.forEach(b => b.classList.add("move-active"))
+}
+
 function pickMove(moveElement, player) {
-    if (TURN_COUNTER % 2 !== (player - 1)) {
+    if (MOVE_IN_PROGRESS) {
+        console.error("Last move still in progress!");
+        return;
+    }
+    if (player !== getCurrentPlayer()) {
         console.error("Not player " + player + "'s turn!");
         return;
     }
@@ -192,7 +213,7 @@ function pickMove(moveElement, player) {
     }
     const move = monster.moves[move_id];
     runAttackAnimation(player, monster, move, target);
-    TURN_COUNTER += 1;
+    advanceTurn();
     restartTimer(countdownDuration, display)
 }
 
@@ -333,6 +354,7 @@ function calcDmgResult(attackerHasStat, moveHasStat, defenderHasStat) {
 }
 
 function runAttackAnimation(player, attacker, move, defender) {
+    MOVE_IN_PROGRESS = true;
     console.log("PLAYER: ", player);
     const attackTableContainer = document.getElementById("player" + player + "Attack");
     const isRightToLeftTable = attackTableContainer.classList.contains("attack-table-container-right");
@@ -424,6 +446,7 @@ function runAttackAnimation(player, attacker, move, defender) {
         attackTableContainer.querySelectorAll("table").forEach(c => c.remove());
         attackTableContainer.style.visibility = "none";
         fight(attacker, move, defender);
+        MOVE_IN_PROGRESS = false;
     }, HIDE_TABLE_TIMEOUT);
 
 }
