@@ -252,14 +252,14 @@ class Move {
     }
 }
 const TYPES_TO_BINARY = {
-    "basic": 0b10000000,
-    "fire": 0b01000000,
-    "water": 0b00100000,
-    "grass": 0b00010000,
-    "rock": 0b00001000,
-    "flying": 0b00000100,
+    "basic":    0b10000000,
+    "fire":     0b01000000,
+    "water":    0b00100000,
+    "grass":    0b00010000,
+    "rock":     0b00001000,
+    "flying":   0b00000100,
     "fighting": 0b00000010,
-    "legendary": 0b00000001,
+    "legend":   0b00000001,
 }
 
 function isTypeFromNum(num, typeNum) {
@@ -269,7 +269,12 @@ function isTypeFromNum(num, typeNum) {
 function getNumberFromTypes(types) {
     let number = 0;
     for (const type of types) {
-        number |= TYPES_TO_BINARY[type]
+        const v = TYPES_TO_BINARY[type];
+        if (v == null) {
+            console.error("Unknown type:", type);
+            continue;
+        }
+        number |= v;
     }
     return number;
 }
@@ -362,9 +367,7 @@ function runAttackAnimation(player, attacker, move, defender) {
     headerList.forEach(h => headerRow.append(h));
     table.append(headerRow);
 
-    for (let i = 0; i < 8; i++) {
-        const mask = 1 << i;
-
+    for (const type in TYPES_TO_BINARY) {
         function createStatNode(hasStat) {
             const td = document.createElement("td");
             if (hasStat) {
@@ -379,9 +382,9 @@ function runAttackAnimation(player, attacker, move, defender) {
 
         const row = document.createElement("tr");
 
-        const attackerHasStat = isTypeFromNum(attacker.typesNum, mask);
-        const moveHasStat = isTypeFromNum(move.typesNum, mask);
-        const defenderHasStat = isTypeFromNum(defender.typesNum, mask);
+        const attackerHasStat = attacker.isType(type);
+        const moveHasStat = move.isType(type);
+        const defenderHasStat = defender.isType(type);
 
         const dmgResult = calcDmgResult(attackerHasStat, moveHasStat, defenderHasStat);
 
