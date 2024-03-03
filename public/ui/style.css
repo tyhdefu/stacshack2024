@@ -31,10 +31,14 @@ body {
     margin: 5px;
     font-size: 12px;
     cursor: pointer;
-    background-color: #4caf50;
+    background-color: gray;
     color: #fff;
     border: 2px solid lightgreen;
     border-radius: 5px;
+}
+
+.move-active {
+    background-color: #4caf50;
 }
 
 .monster-container {
