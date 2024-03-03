@@ -223,8 +223,9 @@ body {
 .popupSale {
     display: none;
     position: fixed;
-    top: 50%;
+    top: 45%;
     left: 50%;
+    width: 40%;
     transform: translate(-50%, -50%);
     background-color: #ffffff;
     padding: 20px;

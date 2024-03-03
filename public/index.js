@@ -501,7 +501,7 @@ function openPopup(player) {
 
     popup.style.display = 'block';
     overlay.style.display = 'block';
-    text.innerHTML = "Player " + player + ": choose your action.";
+    text.innerHTML = "<h3>Player " + player + "'s monster lost</h3><p>They must make a bad financial descision</p>";
 }
 
 function openPopupForSale() {
@@ -511,7 +511,7 @@ function openPopupForSale() {
 
     popupSale.style.display = 'block';
     overlaySale.style.display = 'block';
-    textSale.innerHTML = "Does Player " + winningPlayer + " accept the sale?";
+    textSale.innerHTML = "<h3>Player " + winningPlayer + " - Buy Monster</h3><p>Does Player " + winningPlayer + " want to buy the defeated monster?</p>";
 }
 
 let bought;
@@ -523,7 +523,7 @@ function openPopupMenu(){
 
     popupMenu.style.display = 'block';
     overlayMenu.style.display = 'block';
-    textMenu.innerHTML = "Select the monster you want to buy:";
+    textMenu.innerHTML = "<h3>Player " + winningPlayer + " - Select the monster you want to buy</h3";
     removeButtons("sprites3");
 
     createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
@@ -574,7 +574,7 @@ function openPopupFinal(player, isDraw) {
     popupFinal.style.display = 'block';
     overlayFinal.style.display = 'block';
     if (isDraw == 0) {
-        textFinal.innerHTML = "Player " + player + " has won!\nPlayer 1: " + player1.total + "\nPlayer 2: " + player2.total;
+        textFinal.innerHTML = "<h3>Player " + player + " has won!</h3><p>Player 1: $" + player1.total + "<br>Player 2: $" + player2.total + "</p>";
     }
     else {
         textFinal.innerHTML = "It's a Draw!";
