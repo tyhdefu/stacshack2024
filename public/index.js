@@ -81,7 +81,6 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
-
 }
 
 function createMonsterSpriteButton(monster) {
@@ -430,14 +429,18 @@ function runAttackAnimation(player, attacker, move, defender) {
     attackTableContainer.append(table);
     attackTableContainer.style.display = "block";
 
-    var audio = new Audio();
-    audio.play('8-bit-explosion_F.wav');
-
     const UPDATE_TO_RESULT_TIMEOUT = 2000;
     const HIDE_TABLE_TIMEOUT = 2500;
+    const PLAY_AUDIO = 1500
+
+    setTimeout(() => {
+        var audio = new Audio("/8-bit-explosion_F.wav");
+        audio.play();
+    }, PLAY_AUDIO)
 
     setTimeout(() => {
         // Set all defender-value fields to the result
+
         attackTableContainer.querySelectorAll(".move-value").forEach(mf => {
             mf.innerHTML = "";
         })
