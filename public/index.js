@@ -64,8 +64,8 @@ async function run() {
 
             const button = createMonsterSpriteButton(monster);
             button.addEventListener("click", () => {
-                setDeployedMonster(monster, parseInt(containerId.slice(-1)));
-                closeSprites(parseInt(containerId.slice(-1)));    
+                // setDeployedMonster(monster, parseInt(containerId.slice(-1)));
+                
             }       
             );
             container.appendChild(button);
@@ -534,19 +534,6 @@ function openPopupMenu(){
     createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 }
 
-function openSprites(){
-    const popupSprite = document.getElementById('popupSprites');
-    const overlaySprite = document.getElementById('overlaySprites');
-    
-    popupSprite.style.display = 'block';
-    overlaySprite.style.display = 'block';
-}
-
-function closeSprites(playerID){
-    const popupSprite = document.getElementById('popupSprites'+playerID);
-    
-    popupSprite.style.display = 'none';
-}
 
 function endGames() {
     if (player1.total <= 0) {
