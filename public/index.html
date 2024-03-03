@@ -20,7 +20,9 @@
                 <div class="hp-bar">
                     <div class="current-hp"></div>
                 </div>
-                <img class="monster-image" id="monster-image1" src="sprites/basic2.png" alt="Monster Image">
+                <div id="monster1-icon" class="monster-icon hover-container">
+                    <img class="monster-image" id="monster-image1" src="sprites/basic2.png" alt="Monster Image">
+                </div>
                 <br>
                 <div id="select-button1"></div>
                 <br>
@@ -50,7 +52,9 @@
                 <div class="hp-bar">
                     <div class="current-hp"></div>
                 </div>
-                <img class="monster-image" id="monster-image2" src="sprites/basic1.png" alt="Monster Image">
+                <div id="monster2-icon" class="monster-icon hover-container">
+                    <img class="monster-image" id="monster-image2" src="sprites/basic1.png" alt="Monster Image">
+                </div>
                 <br>
                 <div id="select-button2"></div>
                 <br>
@@ -75,25 +79,31 @@
             </div>
         </div>
     </div>
-    <div id="textbox1" class="textbox">$100</div>
-    <div id="textbox2" class="textbox">$100</div>
-    <div id="monster-container1" class="monster-container">
-        Player 1's Monsters
-        <div class="sprites" id="sprites1">
+
+    <div id="popupSprites1">
+        <div id="textbox1" class="textbox">$100</div>
+        
+        <div id="monster-container1" class="monster-container">
+            Player 1's Monsters
+            <div class="sprites" id="sprites1">
+            </div>
         </div>
     </div>
-    <div id="monster-container2" class="monster-container">
-        Player 2's Monsters
-        <div class="sprites" id="sprites2">
+    
+    <div id="popupSprites2">
+        <div id="textbox2" class="textbox">$100</div>
+        <div id="monster-container2" class="monster-container">
+            Player 2's Monsters
+            <div class="sprites" id="sprites2">
+            </div>
         </div>
-    </div>
-   
-    <div id="popup" class="popup">
-        <div id="text"></div>
-        <button id="buy">Buy a New Monster</button>
-        <button id="sell">Sell your Defeated Monster</button>
     </div>
 
+    <div id="popup" class="popup">
+        <div id="text"></div>
+        <button id="buy">Buy a New Monster<br>(Above market price)</button>
+        <button id="sell">Sell your Defeated Monster<br>(Below market price)</button>
+    </div>
     
     <div id="overlay" class="overlay"></div>
 

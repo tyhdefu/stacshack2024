@@ -63,7 +63,11 @@ async function run() {
             monsterArray[i] = monster;
 
             const button = createMonsterSpriteButton(monster);
-            button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
+            button.addEventListener("click", () => {
+                setDeployedMonster(monster, parseInt(containerId.slice(-1)));
+                closeSprites(parseInt(containerId.slice(-1)));    
+            }       
+            );
             container.appendChild(button);
         }
 
@@ -77,25 +81,43 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
+
 }
 
 function createMonsterSpriteButton(monster) {
     const button = document.createElement("button");
     button.className = "sprite-button";
+    button.classList.add("hover-container");
     const image = document.createElement("img");
 
     image.src = monster.sprite_path
     image.alt = "Button Image";
-    image.classList.add("extra-monster-image")
+    image.classList.add("extra-monster-image");
 
     const monsterValue = document.createElement("div");
     monsterValue.innerText = "$" + monster.value;
     monsterValue.classList.add("monster-value");
 
     button.appendChild(image);
-    button.appendChild(monsterValue)
+    button.appendChild(monsterValue);
+    const tt = createMonsterToolTipText(monster);
+    tt.classList.add("tooltip-text-below");
+    button.appendChild(tt);
 
     return button;
+}
+
+function createMonsterToolTipText(monster) {
+    const tooltipText = document.createElement("span");
+    tooltipText.classList.add("tooltip-text");
+    const lines = [];
+    lines.push("Type: " + monster.typesNum);
+    lines.push("");
+    for (const move of monster.moves) {
+        lines.push(move.name + ": " + move.typesNum);
+    }
+    tooltipText.innerHTML = lines.join("<br>");
+    return tooltipText;
 }
 
 let timerInterval;
@@ -143,6 +165,7 @@ let PLAYER_2_MONSTER = null;
 
 function setDeployedMonster(monster, player) {
     console.log("PLAYER", player, "deployed", monster);
+    let container = document.getElementById("monster" + player + "-icon")
     let image = document.getElementById("monster-image" + player);
     let moves = document.getElementById("move-buttons" + player);
     if (player === 1) {
@@ -158,6 +181,7 @@ function setDeployedMonster(monster, player) {
     for (let i = 0; i < monster.moves.length; i++) {
         moveButtons.item(i).innerText = monster.moves[i].name
     }
+    container.appendChild(createMonsterToolTipText(monster));
 }
 
 function getCurrentPlayer() {
@@ -252,14 +276,14 @@ class Move {
     }
 }
 const TYPES_TO_BINARY = {
-    "basic":    0b10000000,
-    "fire":     0b01000000,
-    "water":    0b00100000,
-    "grass":    0b00010000,
-    "rock":     0b00001000,
-    "flying":   0b00000100,
-    "fighting": 0b00000010,
-    "legend":   0b00000001,
+    "basic":    0b00000001,
+    "fire":     0b00000010,
+    "water":    0b00000100,
+    "grass":    0b00001000,
+    "rock":     0b00010000,
+    "flying":   0b00100000,
+    "fighting": 0b01000000,
+    "legend":   0b10000000,
 }
 
 function isTypeFromNum(num, typeNum) {
@@ -485,7 +509,7 @@ function openPopup(player) {
 
     popup.style.display = 'block';
     overlay.style.display = 'block';
-    text.innerHTML = "Player " + player + ": choose your action.";
+    text.innerHTML = "<h3>Player " + player + "'s monster lost</h3><p>They must make a bad financial descision</p>";
 }
 
 function openPopupForSale() {
@@ -495,7 +519,7 @@ function openPopupForSale() {
 
     popupSale.style.display = 'block';
     overlaySale.style.display = 'block';
-    textSale.innerHTML = "Does Player " + winningPlayer + " accept the sale?";
+    textSale.innerHTML = "<h3>Player " + winningPlayer + " - Buy Monster</h3><p>Does Player " + winningPlayer + " want to buy the defeated monster?</p>";
 }
 
 let bought;
@@ -507,10 +531,24 @@ function openPopupMenu(){
 
     popupMenu.style.display = 'block';
     overlayMenu.style.display = 'block';
-    textMenu.innerHTML = "Select the monster you want to buy:";
+    textMenu.innerHTML = "<h3>Player " + winningPlayer + " - Select the monster you want to buy</h3";
     removeButtons("sprites3");
 
     createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+}
+
+function openSprites(){
+    const popupSprite = document.getElementById('popupSprites');
+    const overlaySprite = document.getElementById('overlaySprites');
+    
+    popupSprite.style.display = 'block';
+    overlaySprite.style.display = 'block';
+}
+
+function closeSprites(playerID){
+    const popupSprite = document.getElementById('popupSprites'+playerID);
+    
+    popupSprite.style.display = 'none';
 }
 
 function endGames() {
@@ -558,7 +596,7 @@ function openPopupFinal(player, isDraw) {
     popupFinal.style.display = 'block';
     overlayFinal.style.display = 'block';
     if (isDraw == 0) {
-        textFinal.innerHTML = "Player " + player + " has won!\nPlayer 1: " + player1.total + "\nPlayer 2: " + player2.total;
+        textFinal.innerHTML = "<h3>Player " + player + " has won!</h3><p>Player 1: $" + player1.total + "<br>Player 2: $" + player2.total + "</p>";
     }
     else {
         textFinal.innerHTML = "It's a Draw!";
