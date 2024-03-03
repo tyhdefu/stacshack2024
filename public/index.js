@@ -330,6 +330,7 @@ function calcDmgResult(attackerHasStat, moveHasStat, defenderHasStat) {
 function runAttackAnimation(player, attacker, move, defender) {
     console.log("PLAYER: ", player);
     const attackTableContainer = document.getElementById("player" + player + "Attack");
+    const isRightToLeftTable = attackTableContainer.classList.contains("attack-table-container-right");
 
     const table = document.createElement("table");
     const attackerHeader = document.createElement("th");
@@ -340,7 +341,11 @@ function runAttackAnimation(player, attacker, move, defender) {
     defenderHeader.innerText = "Defender";
 
     const headerRow = document.createElement("tr");
-    headerRow.append(attackerHeader, moveHeader, defenderHeader);
+    const headerList = [attackerHeader, moveHeader, defenderHeader];
+    if (isRightToLeftTable) {
+        headerList.reverse();
+    }
+    headerList.forEach(h => headerRow.append(h));
     table.append(headerRow);
 
     for (let i = 0; i < 8; i++) {
@@ -373,7 +378,11 @@ function runAttackAnimation(player, attacker, move, defender) {
         const defenderNode = createStatNode(defenderHasStat);
         defenderNode.classList.add("defender-value");
         defenderNode.dataset["result"] = "" + dmgResult;
-        row.append(attackerNode, moveNode, defenderNode);
+        const rowList = [attackerNode, moveNode, defenderNode];
+        if (isRightToLeftTable) {
+            rowList.reverse();
+        }
+        rowList.forEach(h => row.append(h));
         table.append(row);
     }
 

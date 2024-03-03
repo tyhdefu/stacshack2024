@@ -44,35 +44,59 @@ body {
     width: 100%; /* Adjust the width as needed */
 }
 
-@keyframes attack {
-    from {padding-right: 100%}
-    to {padding-right: 0%}
+/* ATTACK TABLES / ANIMATION */
+
+@keyframes attack-right {
+    from {transform: translateX(-100%);}
+    to {transform: translateX(0%);}
 }
 
-.table-container {
+@keyframes attack-left {
+    from {transform: translateX(100%);}
+    to {transform: translateX(0%);}
+}
+
+.attack-table-container {
     width: 100%;
     box-sizing: border-box;
-    overflow-x: auto;
+    overflow-x: hidden;
     margin-top: 10px; /* Adjust margin as needed */
 }
 
-.table-container table {
+.attack-table-container table {
     width: 100%;
-    float: right;
     margin: 0;
-    text-align: left;
-    /* Add any other styles for the table */
+    position: relative;
 }
 
-.table-container table .move-value {
-    animation-name: attack;
-    animation-duration: 2s;
-    animation-iteration-count: 1;
+.attack-table-container-left table {
+    float: right;
+    text-align: left;
+}
+.attack-table-container-right table {
+    float: left;
     text-align: right;
 }
 
-.table-container table .defender-value {
+.attack-table-container table .move-value {
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+}
+
+.attack-table-container-left table .move-value {
+    animation-name: attack-right;
+    text-align: right;
+}
+.attack-table-container-right table .move-value {
+    animation-name: attack-left;
     text-align: left;
+}
+
+.attack-table-container-left table .defender-value {
+    text-align: left;
+}
+.attack-table-container-right table .defender-value {
+    text-align: right;
 }
 
 .sprite-button {
