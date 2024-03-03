@@ -274,3 +274,7 @@ body {
     width: 100%;
     image-rendering: pixelated;
 }
+
+.monster-value {
+    color: black;
+}

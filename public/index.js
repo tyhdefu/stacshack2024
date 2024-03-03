@@ -64,6 +64,7 @@ async function run() {
 
             const button = createMonsterSpriteButton(monster);
             button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
+            container.appendChild(button);
         }
 
         return monsterArray;
@@ -87,7 +88,12 @@ function createMonsterSpriteButton(monster) {
     image.alt = "Button Image";
     image.classList.add("extra-monster-image")
 
+    const monsterValue = document.createElement("div");
+    monsterValue.innerText = "$" + monster.value;
+    monsterValue.classList.add("monster-value");
+
     button.appendChild(image);
+    button.appendChild(monsterValue)
 
     return button;
 }
