@@ -458,6 +458,8 @@ function updateMonsterHp(monster, player) {
 
     const monsterHPPct = (monster.hp / monster.max_hp) * 100;
 
+    endGames();
+
     if (monsterHPPct <= 0) {
         monsterHP.style.width = "0%";
 
@@ -490,7 +492,7 @@ function openPopup(player) {
 
     popup.style.display = 'block';
     overlay.style.display = 'block';
-    text.innerHTML = "Player " + player;
+    text.innerHTML = "Player " + player + ": choose your action.";
 }
 
 function openPopupForSale() {
@@ -516,6 +518,58 @@ function openPopupMenu(){
     removeButtons("sprites3");
 
     createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+}
+
+function endGames() {
+    if (player1.total <= 0) {
+        openPopupFinal(2, 0);
+    }
+    else if (player2.total <= 0) {
+        openPopupFinal(1, 0);
+    }
+    else if (TURN_COUNTER == 5) {
+        let monstersTotal1 = 0;
+        let monstersTotal2 = 0;
+
+        for (let i = 0; i < numMonsters1; i++) {
+            monstersTotal1 += player1.monsters[i].value;
+        }
+
+        for (let j = 0; j < numMonsters2; j++) {
+            monstersTotal2 += player2.monsters[j].value;
+        }
+
+        console.log(monstersTotal1);
+        console.log(monstersTotal2);
+
+        player1.total += monstersTotal1 / 2;
+        player2.total += monstersTotal2 / 2;
+
+        if (player1.total < player2.total) {
+            openPopupFinal(2, 0)
+        }
+        else if (player1.total > player2.total) {
+            openPopupFinal(1, 0);
+        }
+        else {
+            openPopupFinal(0, 1)
+        }
+    }
+}
+
+function openPopupFinal(player, isDraw) {
+    const popupFinal = document.getElementById('popupFinal');
+    const overlayFinal = document.getElementById('overlayFinal');
+    const textFinal = document.getElementById("textFinal");
+
+    popupFinal.style.display = 'block';
+    overlayFinal.style.display = 'block';
+    if (isDraw == 0) {
+        textFinal.innerHTML = "Player " + player + " has won!\nPlayer 1: " + player1.total + "\nPlayer 2: " + player2.total;
+    }
+    else {
+        textFinal.innerHTML = "It's a Draw!";
+    }
 }
 
 function createButtons(containerId, buttonCount, monsterIdArray) {
