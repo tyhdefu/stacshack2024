@@ -64,8 +64,7 @@ async function run() {
 
             const button = createMonsterSpriteButton(monster);
             button.addEventListener("click", () => {
-                setDeployedMonster(monster, parseInt(containerId.slice(-1)));
-                closeSprites(parseInt(containerId.slice(-1)));    
+                // setDeployedMonster(monster, parseInt(containerId.slice(-1))); 
             }       
             );
             container.appendChild(button);
@@ -81,7 +80,6 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
-
 }
 
 function createMonsterSpriteButton(monster) {
@@ -495,8 +493,16 @@ function die(player) {
     else {
         winningPlayer = 1;
     }
-
+    
     window.onload = openPopup(player);
+    openSprites(player);
+}
+
+function disableThing(){
+    const buttons = container.querySelectorAll("#sprites1");
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
 }
 
 function openPopup(player) {
@@ -521,6 +527,7 @@ function openPopupForSale() {
 
 let bought;
 function openPopupMenu(){
+    
     bought = 0;
     const popupMenu = document.getElementById('popupMenu');
     const overlayMenu = document.getElementById('overlayMenu');
@@ -534,19 +541,7 @@ function openPopupMenu(){
     createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 }
 
-function openSprites(){
-    const popupSprite = document.getElementById('popupSprites');
-    const overlaySprite = document.getElementById('overlaySprites');
-    
-    popupSprite.style.display = 'block';
-    overlaySprite.style.display = 'block';
-}
 
-function closeSprites(playerID){
-    const popupSprite = document.getElementById('popupSprites'+playerID);
-    
-    popupSprite.style.display = 'none';
-}
 
 function endGames() {
     if (player1.total <= 0) {
@@ -636,14 +631,14 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
                 removeButtons("sprites1");
                 player1 = new Player(player1.total, createButtons("sprites1", ++numMonsters1, indexes));
                 
-                setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
+                // setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
             }
             else if (losingPlayer == 1 && bought == 1) {
                 document.getElementById("textbox1").innerText = "$" + player1.total;
                 removeButtons("sprites1");
                 player1 = new Player(player1.total, createButtons("sprites1", numMonsters1, indexes));
                 
-                setDeployedMonster(monster, 1);
+                // setDeployedMonster(monster, 1);
             }
             else if (losingPlayer == 2 && bought == 0) {
                 bought = 1;
@@ -653,14 +648,14 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
                 removeButtons("sprites2");
                 player2 = new Player(player2.total, createButtons("sprites2", ++numMonsters2, indexes2));
                 
-                setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
+                // setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
             }
             else if (losingPlayer == 2 && bought == 1) {
                 document.getElementById("textbox2").innerText = "$" + player2.total;
                 removeButtons("sprites2");
                 player2 = new Player(player2.total, createButtons("sprites2", numMonsters2, indexes2));
                 
-                setDeployedMonster(monster, 2);
+                // setDeployedMonster(monster, 2);
             }
 
             closePopupMenu();
@@ -685,6 +680,7 @@ function closePopupForSale() {
 function closePopupMenu(){
     popupMenu.style.display = 'none';
     overlayMenu.style.display = 'none';
+    //disable
 }
 
 const buyButton = document.getElementById('buy');
@@ -769,10 +765,5 @@ function exchangeMonsterNo() {
     buyNewMonster();
 }
 
-function removeButtons(containerId) {
-    const container = document.getElementById(containerId);
 
-    while (container.firstChild) {
-        container.removeChild(container.firstChild);
-    }
-}
+
