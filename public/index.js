@@ -417,7 +417,7 @@ function runAttackAnimation(player, attacker, move, defender) {
     attackTableContainer.style.display = "block";
 
     const UPDATE_TO_RESULT_TIMEOUT = 2000;
-    const HIDE_TABLE_TIMEOUT = 3500;
+    const HIDE_TABLE_TIMEOUT = 2500;
 
     setTimeout(() => {
         // Set all defender-value fields to the result
