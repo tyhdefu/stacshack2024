@@ -430,6 +430,9 @@ function runAttackAnimation(player, attacker, move, defender) {
     attackTableContainer.append(table);
     attackTableContainer.style.display = "block";
 
+    var audio = new Audio();
+    audio.play('8-bit-explosion_F.wav');
+
     const UPDATE_TO_RESULT_TIMEOUT = 2000;
     const HIDE_TABLE_TIMEOUT = 2500;
 
