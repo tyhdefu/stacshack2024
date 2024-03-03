@@ -434,7 +434,7 @@ function runAttackAnimation(player, attacker, move, defender) {
     const PLAY_AUDIO = 1500
 
     setTimeout(() => {
-        var audio = new Audio("/8-bit-explosion_F.wav");
+        var audio = new Audio("8-bit-explosion_F.wav");
         audio.play();
     }, PLAY_AUDIO)
 
