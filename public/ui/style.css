@@ -12,9 +12,9 @@ body {
     width: 800px;
     display: flex;
     justify-content: space-evenly;
-    align-items: center;
     margin: 50px auto;
     position: relative;
+    height: 600px;
 }
 
 .move-buttons1, .move-buttons2 {
@@ -42,7 +42,6 @@ body {
     background-color: #fff;
     border-radius: 10px;
     width: 100%; /* Adjust the width as needed */
-    height: 500px;
 }
 
 @keyframes attack {
