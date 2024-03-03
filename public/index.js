@@ -63,7 +63,11 @@ async function run() {
             monsterArray[i] = monster;
 
             const button = createMonsterSpriteButton(monster);
-            button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
+            button.addEventListener("click", () => {
+                setDeployedMonster(monster, parseInt(containerId.slice(-1)));
+                closeSprites(parseInt(containerId.slice(-1)));    
+            }       
+            );
             container.appendChild(button);
         }
 
@@ -77,6 +81,7 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
+
 }
 
 function createMonsterSpriteButton(monster) {
@@ -508,6 +513,20 @@ function openPopupMenu(){
     removeButtons("sprites3");
 
     createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+}
+
+function openSprites(){
+    const popupSprite = document.getElementById('popupSprites');
+    const overlaySprite = document.getElementById('overlaySprites');
+    
+    popupSprite.style.display = 'block';
+    overlaySprite.style.display = 'block';
+}
+
+function closeSprites(playerID){
+    const popupSprite = document.getElementById('popupSprites'+playerID);
+    
+    popupSprite.style.display = 'none';
 }
 
 function endGames() {

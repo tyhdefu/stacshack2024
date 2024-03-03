@@ -270,6 +270,14 @@ body {
     z-index: 999;
 }
 
+#popupSprites1 {
+    display: block;
+}
+
+#popupSprites2 {
+    display: block;
+}
+
 .extra-monster-image {
     width: 100%;
     image-rendering: pixelated;
