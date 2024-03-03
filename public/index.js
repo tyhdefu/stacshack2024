@@ -195,7 +195,7 @@ function advanceTurn() {
     TURN_COUNTER += 1;
 
     const newMoveButtons = document.querySelectorAll("#move-buttons" + getCurrentPlayer() + " .move-button");
-    newMoveButtons.forEach(b => b.classList.add("move-active"))
+    newMoveButtons.forEach(b => b.classList.add("move-active"));
 }
 
 function pickMove(moveElement, player) {
@@ -614,10 +614,10 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
             console.error(`Container with ID "sprites${losingPlayer}" not found.`);
             return monsterArray;
         }
-
         button.addEventListener("click", () => {
+            
             console.log("Button clicked");
-
+         
             if (losingPlayer == 1 && bought == 0) {
                 bought = 1;
                 player1.total -= monster.value;
