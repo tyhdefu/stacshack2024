@@ -87,20 +87,37 @@ async function run() {
 function createMonsterSpriteButton(monster) {
     const button = document.createElement("button");
     button.className = "sprite-button";
+    button.classList.add("hover-container");
     const image = document.createElement("img");
 
     image.src = monster.sprite_path
     image.alt = "Button Image";
-    image.classList.add("extra-monster-image")
+    image.classList.add("extra-monster-image");
 
     const monsterValue = document.createElement("div");
     monsterValue.innerText = "$" + monster.value;
     monsterValue.classList.add("monster-value");
 
     button.appendChild(image);
-    button.appendChild(monsterValue)
+    button.appendChild(monsterValue);
+    const tt = createMonsterToolTipText(monster);
+    tt.classList.add("tooltip-text-below");
+    button.appendChild(tt);
 
     return button;
+}
+
+function createMonsterToolTipText(monster) {
+    const tooltipText = document.createElement("span");
+    tooltipText.classList.add("tooltip-text");
+    const lines = [];
+    lines.push("Type: " + monster.typesNum);
+    lines.push("");
+    for (const move of monster.moves) {
+        lines.push(move.name + ": " + move.typesNum);
+    }
+    tooltipText.innerHTML = lines.join("<br>");
+    return tooltipText;
 }
 
 let timerInterval;
@@ -148,6 +165,7 @@ let PLAYER_2_MONSTER = null;
 
 function setDeployedMonster(monster, player) {
     console.log("PLAYER", player, "deployed", monster);
+    let container = document.getElementById("monster" + player + "-icon")
     let image = document.getElementById("monster-image" + player);
     let moves = document.getElementById("move-buttons" + player);
     if (player === 1) {
@@ -163,6 +181,7 @@ function setDeployedMonster(monster, player) {
     for (let i = 0; i < monster.moves.length; i++) {
         moveButtons.item(i).innerText = monster.moves[i].name
     }
+    container.appendChild(createMonsterToolTipText(monster));
 }
 
 function getCurrentPlayer() {
@@ -257,14 +276,14 @@ class Move {
     }
 }
 const TYPES_TO_BINARY = {
-    "basic":    0b10000000,
-    "fire":     0b01000000,
-    "water":    0b00100000,
-    "grass":    0b00010000,
-    "rock":     0b00001000,
-    "flying":   0b00000100,
-    "fighting": 0b00000010,
-    "legend":   0b00000001,
+    "basic":    0b00000001,
+    "fire":     0b00000010,
+    "water":    0b00000100,
+    "grass":    0b00001000,
+    "rock":     0b00010000,
+    "flying":   0b00100000,
+    "fighting": 0b01000000,
+    "legend":   0b10000000,
 }
 
 function isTypeFromNum(num, typeNum) {
