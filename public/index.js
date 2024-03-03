@@ -54,7 +54,7 @@ async function run() {
         return indexes;
     }
 
-    function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
+    function createInitialButtons(containerId, buttonCount, monsterIdArray, monsterData) {
         const monsterArray = new Array(16);
         const container = document.getElementById(containerId);
         container.style.textAlign = "center";
@@ -80,35 +80,11 @@ async function run() {
 
     indexes = generateRandomIndexes();
     indexes2 = generateRandomIndexes();
-    player1 = new Player(startingTotal, createButtons("sprites1", numMonsters1, indexes, monsterData));
-    player2 = new Player(startingTotal, createButtons("sprites2", numMonsters2, indexes2, monsterData));
+    player1 = new Player(startingTotal, createInitialButtons("sprites1", numMonsters1, indexes, monsterData));
+    player2 = new Player(startingTotal, createInitialButtons("sprites2", numMonsters2, indexes2, monsterData));
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
-}
-
-function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
-    const monsterArray = new Array(16);
-    const container = document.getElementById(containerId);
-    container.style.textAlign = "center";
-    for (let i = 0; i < buttonCount; i++) {
-        const button = document.createElement("button");
-        button.className = "sprite-button";
-        const image = document.createElement("img");
-
-        const monster = createMonster(monsterIdArray[i], monsterData, moveData);
-        monsterArray[i] = monster;
-
-        image.src = monster.sprite_path
-        image.alt = "Button Image";
-        image.classList.add("extra-monster-image")
-
-        button.appendChild(image);
-        button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
-        container.appendChild(button);
-    }
-
-    return monsterArray;
 }
 
 let timerInterval;
@@ -519,7 +495,6 @@ function openPopupMenu(){
 }
 
 function createButtons(containerId, buttonCount, monsterIdArray) {
-   
     const monsterArray = new Array(buttonCount);
     const container = document.getElementById(containerId);
 
@@ -573,14 +548,14 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
                 indexes.push(monster.id);
                 document.getElementById("textbox1").innerText = "$" + player1.total;
                 removeButtons("sprites1");
-                player1 = new Player(player1.total, createButtons("sprites1", ++numMonsters1, indexes, monsterData));
+                player1 = new Player(player1.total, createButtons("sprites1", ++numMonsters1, indexes));
                 
                 setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
             }
             else if (losingPlayer == 1 && bought == 1) {
                 document.getElementById("textbox1").innerText = "$" + player1.total;
                 removeButtons("sprites1");
-                player1 = new Player(player1.total, createButtons("sprites1", numMonsters1, indexes, monsterData));
+                player1 = new Player(player1.total, createButtons("sprites1", numMonsters1, indexes));
                 
                 setDeployedMonster(monster, 1);
             }
@@ -590,14 +565,14 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
                 indexes2.push(monster.id);
                 document.getElementById("textbox2").innerText = "$" + player2.total;
                 removeButtons("sprites2");
-                player2 = new Player(player2.total, createButtons("sprites2", ++numMonsters2, indexes2, monsterData));
+                player2 = new Player(player2.total, createButtons("sprites2", ++numMonsters2, indexes2));
                 
                 setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
             }
             else if (losingPlayer == 2 && bought == 1) {
                 document.getElementById("textbox2").innerText = "$" + player2.total;
                 removeButtons("sprites2");
-                player2 = new Player(player2.total, createButtons("sprites2", numMonsters2, indexes2, monsterData));
+                player2 = new Player(player2.total, createButtons("sprites2", numMonsters2, indexes2));
                 
                 setDeployedMonster(monster, 2);
             }
