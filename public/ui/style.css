@@ -138,7 +138,6 @@ body {
 
     padding: 8px 16px;
     margin: 5px;
-    font-size: 12px;
     border-radius: 5px;
 }
 
@@ -148,6 +147,10 @@ body {
 
 #textbox2 {
     right: 10px; /* Adjust the right value as needed */
+}
+
+.money-counter {
+    font-size: 17px;
 }
 
 #monster-container1,
