@@ -59,20 +59,11 @@ async function run() {
         const container = document.getElementById(containerId);
         container.style.textAlign = "center";
         for (let i = 0; i < buttonCount; i++) {
-            const button = document.createElement("button");
-            button.className = "sprite-button";
-            const image = document.createElement("img");
-
             const monster = createMonster(monsterIdArray[i], monsterData, moveData);
             monsterArray[i] = monster;
 
-            image.src = monster.sprite_path
-            image.alt = "Button Image";
-            image.classList.add("extra-monster-image")
-
-            button.appendChild(image);
+            const button = createMonsterSpriteButton(monster);
             button.addEventListener("click", () => setDeployedMonster(monster, parseInt(containerId.slice(-1))));
-            container.appendChild(button);
         }
 
         return monsterArray;
@@ -85,6 +76,20 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
+}
+
+function createMonsterSpriteButton(monster) {
+    const button = document.createElement("button");
+    button.className = "sprite-button";
+    const image = document.createElement("img");
+
+    image.src = monster.sprite_path
+    image.alt = "Button Image";
+    image.classList.add("extra-monster-image")
+
+    button.appendChild(image);
+
+    return button;
 }
 
 let timerInterval;
@@ -507,19 +512,10 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
     container.style.textAlign = "center";
 
     for (let i = 0; i < buttonCount; i++) {
-        const button = document.createElement("button");
-        button.className = "sprite-button";
-        const image = document.createElement("img");
-
-        // Assuming createMonster returns an object with a property sprite_path
         const monster = createMonster(monsterIdArray[i], monsterData, moveData);
         monsterArray[i] = monster;
 
-        image.src = monster.sprite_path;
-        image.alt = "Button Image";
-        image.classList.add("extra-monster-image");
-
-        button.appendChild(image);
+        const button = createMonsterSpriteButton(monster)
 
         // Check if "sprites" + losingPlayer container exists
         const spriteContainer = document.getElementById("sprites" + losingPlayer);
@@ -530,17 +526,6 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
 
         button.addEventListener("click", () => {
             console.log("Button clicked");
-            
-            const button1 = document.createElement("button");
-            button1.className = "sprite-button";
-            const image = document.createElement("img");
-
-            // Assuming createMonster returns an object with a property sprite_path
-            const monster = createMonster(monsterIdArray[i], monsterData, moveData);
-
-            image.src = monster.sprite_path;
-            image.alt = "Button Image";
-            image.classList.add("extra-monster-image");
 
             if (losingPlayer == 1 && bought == 0) {
                 bought = 1;
