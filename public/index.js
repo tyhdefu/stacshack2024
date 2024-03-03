@@ -132,7 +132,7 @@ function startTimer(duration, display) {
         seconds = seconds < 10 ? "0" + seconds : seconds;
         display.textContent = "Player " + (getCurrentPlayer()) + ": " + seconds;
 
-        if (--timer < 0) {
+        if (!MOVE_IN_PROGRESS && --timer < 0) {
             // You can add any logic here when the timer reaches zero
             timer = duration; // Reset the timer
             advanceTurn();
