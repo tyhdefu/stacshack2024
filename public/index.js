@@ -527,7 +527,7 @@ function endGames() {
     else if (player2.total <= 0) {
         openPopupFinal(1, 0);
     }
-    else if (TURN_COUNTER == 5) {
+    else if (TURN_COUNTER == 32) {
         let monstersTotal1 = 0;
         let monstersTotal2 = 0;
 
