@@ -9,6 +9,7 @@ let moveData;
 let numMonsters1 = 4;
 let numMonsters2 = 4;
 let startingTotal = 100;
+let TURN_COUNTER = 0;
 
 async function run() {
     monsterData = await loadMonsterData();
@@ -110,7 +111,8 @@ function createButtons(containerId, buttonCount, monsterIdArray, monsterData) {
 let timerInterval;
 function startTimer(duration, display) {
     let timer = duration, minutes, seconds;
-    timerInterval = setInterval(function () {
+
+    function updateTimer() {
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
 
@@ -124,7 +126,12 @@ function startTimer(duration, display) {
             TURN_COUNTER += 1;
             restartTimer(); // Restart the timer when it reaches zero
         }
-    }, 1000);
+
+    }
+
+    // Update immediately and re-update every 1 second
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
 }
 
 function restartTimer() {
@@ -162,8 +169,6 @@ function setDeployedMonster(monster, player) {
         moveButtons.item(i).innerText = monster.moves[i].name
     }
 }
-
-let TURN_COUNTER = 0;
 
 function pickMove(moveElement, player) {
     if (TURN_COUNTER % 2 !== (player - 1)) {
@@ -330,6 +335,7 @@ function calcDmgResult(attackerHasStat, moveHasStat, defenderHasStat) {
 function runAttackAnimation(player, attacker, move, defender) {
     console.log("PLAYER: ", player);
     const attackTableContainer = document.getElementById("player" + player + "Attack");
+    const isRightToLeftTable = attackTableContainer.classList.contains("attack-table-container-right");
 
     const table = document.createElement("table");
     const attackerHeader = document.createElement("th");
@@ -340,7 +346,11 @@ function runAttackAnimation(player, attacker, move, defender) {
     defenderHeader.innerText = "Defender";
 
     const headerRow = document.createElement("tr");
-    headerRow.append(attackerHeader, moveHeader, defenderHeader);
+    const headerList = [attackerHeader, moveHeader, defenderHeader];
+    if (isRightToLeftTable) {
+        headerList.reverse();
+    }
+    headerList.forEach(h => headerRow.append(h));
     table.append(headerRow);
 
     for (let i = 0; i < 8; i++) {
@@ -373,7 +383,11 @@ function runAttackAnimation(player, attacker, move, defender) {
         const defenderNode = createStatNode(defenderHasStat);
         defenderNode.classList.add("defender-value");
         defenderNode.dataset["result"] = "" + dmgResult;
-        row.append(attackerNode, moveNode, defenderNode);
+        const rowList = [attackerNode, moveNode, defenderNode];
+        if (isRightToLeftTable) {
+            rowList.reverse();
+        }
+        rowList.forEach(h => row.append(h));
         table.append(row);
     }
 
