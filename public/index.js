@@ -522,9 +522,9 @@ function openPopupForSale() {
     textSale.innerHTML = "<h3>Player " + winningPlayer + " - Buy Monster</h3><p>Does Player " + winningPlayer + " want to buy the defeated monster?</p>";
 }
 
-let NOT_BUYING;
+let BUYING;
 function openPopupMenu(){
-    NOT_BUYING = 0;
+    BUYING = true;
     const popupMenu = document.getElementById('popupMenu');
     const overlayMenu = document.getElementById('overlayMenu');
     const textMenu = document.getElementById("textMenu");
@@ -607,7 +607,7 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
     for (let i = 0; i < buttonCount; i++) {
         const monster = createMonster(monsterIdArray[i], monsterData, moveData);
 
-        if (NOT_BUYING === 0) {
+        if (BUYING) {
             monster.value = Math.ceil(monster.value * BAD_PRICE_MULTIPLIER);
         }
 
@@ -623,8 +623,8 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
         button.addEventListener("click", () => {
             console.log("Button clicked");
 
-            if (losingPlayer == 1 && NOT_BUYING == 0) {
-                NOT_BUYING = 1;
+            if (losingPlayer == 1 && BUYING) {
+                BUYING = false;
                 player1.total -= monster.value;
                 indexes.push(monster.id);
                 document.getElementById("textbox1").innerText = "$" + player1.total;
@@ -633,15 +633,15 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
                 
                 setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
             }
-            else if (losingPlayer == 1 && NOT_BUYING == 1) {
+            else if (losingPlayer == 1 && !BUYING) {
                 document.getElementById("textbox1").innerText = "$" + player1.total;
                 removeButtons("sprites1");
                 player1 = new Player(player1.total, createButtons("sprites1", numMonsters1, indexes));
                 
                 setDeployedMonster(monster, 1);
             }
-            else if (losingPlayer == 2 && NOT_BUYING == 0) {
-                NOT_BUYING = 1;
+            else if (losingPlayer == 2 && BUYING) {
+                BUYING = false;
                 player2.total -= monster.value;
                 indexes2.push(monster.id);
                 document.getElementById("textbox2").innerText = "$" + player2.total;
@@ -650,7 +650,7 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
                 
                 setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
             }
-            else if (losingPlayer == 2 && NOT_BUYING == 1) {
+            else if (losingPlayer == 2 && !BUYING) {
                 document.getElementById("textbox2").innerText = "$" + player2.total;
                 removeButtons("sprites2");
                 player2 = new Player(player2.total, createButtons("sprites2", numMonsters2, indexes2));
