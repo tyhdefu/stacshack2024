@@ -81,7 +81,6 @@ async function run() {
     // Use last element of indexes for the current monster.
     setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
-
 }
 
 function createMonsterSpriteButton(monster) {
@@ -132,7 +131,7 @@ function startTimer(duration, display) {
         seconds = seconds < 10 ? "0" + seconds : seconds;
         display.textContent = "Player " + (getCurrentPlayer()) + ": " + seconds;
 
-        if (--timer < 0) {
+        if (!MOVE_IN_PROGRESS && --timer < 0) {
             // You can add any logic here when the timer reaches zero
             timer = duration; // Reset the timer
             advanceTurn();
@@ -430,14 +429,18 @@ function runAttackAnimation(player, attacker, move, defender) {
     attackTableContainer.append(table);
     attackTableContainer.style.display = "block";
 
-    var audio = new Audio();
-    audio.play('8-bit-explosion_F.wav');
-
     const UPDATE_TO_RESULT_TIMEOUT = 2000;
     const HIDE_TABLE_TIMEOUT = 2500;
+    const PLAY_AUDIO = 1500
+
+    setTimeout(() => {
+        var audio = new Audio("/8-bit-explosion_F.wav");
+        audio.play();
+    }, PLAY_AUDIO)
 
     setTimeout(() => {
         // Set all defender-value fields to the result
+
         attackTableContainer.querySelectorAll(".move-value").forEach(mf => {
             mf.innerHTML = "";
         })
@@ -522,9 +525,9 @@ function openPopupForSale() {
     textSale.innerHTML = "<h3>Player " + winningPlayer + " - Buy Monster</h3><p>Does Player " + winningPlayer + " want to buy the defeated monster?</p>";
 }
 
-let bought;
+let BUYING;
 function openPopupMenu(){
-    bought = 0;
+    BUYING = true;
     const popupMenu = document.getElementById('popupMenu');
     const overlayMenu = document.getElementById('overlayMenu');
     const textMenu = document.getElementById("textMenu");
@@ -591,7 +594,9 @@ function openPopupFinal(player, isDraw) {
 }
 
 function createButtons(containerId, buttonCount, monsterIdArray) {
-    const monsterArray = new Array(buttonCount);
+    const BAD_PRICE_MULTIPLIER = 1.5;
+
+    const monsterArray = monsterIdArray.map(id => createMonster(id, monsterData, moveData));
     const container = document.getElementById(containerId);
 
     // Check if the container exists
@@ -604,7 +609,10 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
 
     for (let i = 0; i < buttonCount; i++) {
         const monster = createMonster(monsterIdArray[i], monsterData, moveData);
-        monsterArray[i] = monster;
+
+        if (BUYING) {
+            monster.value = Math.ceil(monster.value * BAD_PRICE_MULTIPLIER);
+        }
 
         const button = createMonsterSpriteButton(monster)
 
@@ -617,9 +625,9 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
         button.addEventListener("click", () => {
             
             console.log("Button clicked");
-         
-            if (losingPlayer == 1 && bought == 0) {
-                bought = 1;
+
+            if (losingPlayer == 1 && BUYING) {
+                BUYING = false;
                 player1.total -= monster.value;
                 indexes.push(monster.id);
                 document.getElementById("textbox1").innerText = "$" + player1.total;
@@ -628,15 +636,15 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
                 
                 setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
             }
-            else if (losingPlayer == 1 && bought == 1) {
+            else if (losingPlayer == 1 && !BUYING) {
                 document.getElementById("textbox1").innerText = "$" + player1.total;
                 removeButtons("sprites1");
                 player1 = new Player(player1.total, createButtons("sprites1", numMonsters1, indexes));
                 
                 setDeployedMonster(monster, 1);
             }
-            else if (losingPlayer == 2 && bought == 0) {
-                bought = 1;
+            else if (losingPlayer == 2 && BUYING) {
+                BUYING = false;
                 player2.total -= monster.value;
                 indexes2.push(monster.id);
                 document.getElementById("textbox2").innerText = "$" + player2.total;
@@ -645,7 +653,7 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
                 
                 setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
             }
-            else if (losingPlayer == 2 && bought == 1) {
+            else if (losingPlayer == 2 && !BUYING) {
                 document.getElementById("textbox2").innerText = "$" + player2.total;
                 removeButtons("sprites2");
                 player2 = new Player(player2.total, createButtons("sprites2", numMonsters2, indexes2));
@@ -700,9 +708,11 @@ function exchangeMonster() {
 }
 
 function exchangeMonsterYes() {
+    const TAKE_DEFEATED_DISCOUNT = 0.5;
+    const price = TAKE_DEFEATED_DISCOUNT * deadMonster.value;
     if (losingPlayer == 1) {
-        player1.total += 0.5 * deadMonster.value;
-        player2.total -= 0.5 * deadMonster.value;
+        player1.total += price;
+        player2.total -= price;
         
         for (let i = 0; i < numMonsters1; i++) {
             if (deadMonster == player1.monsters[i]) {
@@ -726,8 +736,8 @@ function exchangeMonsterYes() {
         setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
     }
     else {
-        player2.total += 0.5 * deadMonster.value;
-        player1.total -= 0.5 * deadMonster.value;
+        player2.total += price;
+        player1.total -= price;
 
         for (let i = 0; i < numMonsters2; i++) {
             if (deadMonster == player2.monsters[i]) {
