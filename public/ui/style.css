@@ -303,3 +303,29 @@ body {
 .monster-value {
     color: black;
 }
+
+.tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    width: 100px;
+    color: white;
+    font-size: 12px;
+    background-color: #192733;
+    border-radius: 10px;
+    padding: 10px 15px 10px 15px;
+}
+
+.tooltip-text-below {
+    transform: translate(-50%, 25px);
+}
+
+.hover-container:hover .tooltip-text {
+    visibility: visible;
+    /* Position below*/
+}
+
+.monster-icon {
+    display: inline-block;
+    margin: auto;
+}
