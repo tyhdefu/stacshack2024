@@ -303,12 +303,12 @@ function getNumberFromTypes(types) {
 }
 
 async function loadMonsterData() {
-    const response = await fetch("/monsters.json");
+    const response = await fetch("monsters.json");
     return response.json();
 }
 
 async function loadMoveData() {
-    const moves = await fetch("./moves.json");
+    const moves = await fetch("moves.json");
     return moves.json();
 }
 
