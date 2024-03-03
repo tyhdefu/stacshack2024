@@ -503,7 +503,9 @@ function openPopupForSale() {
     textSale.innerHTML = "Does Player " + winningPlayer + " accept the sale?";
 }
 
+let bought;
 function openPopupMenu(){
+    bought = 0;
     const popupMenu = document.getElementById('popupMenu');
     const overlayMenu = document.getElementById('overlayMenu');
     const textMenu = document.getElementById("textMenu");
@@ -516,9 +518,8 @@ function openPopupMenu(){
     createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 }
 
-let bought = 0;
-
 function createButtons(containerId, buttonCount, monsterIdArray) {
+   
     const monsterArray = new Array(buttonCount);
     const container = document.getElementById(containerId);
 
