@@ -473,9 +473,13 @@ function openPopupMenu(){
 
     popupMenu.style.display = 'block';
     overlayMenu.style.display = 'block';
-    textMenu.innerHTML = "Select monster you want to buy";
-    createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,12,13,14,15,16], monsterData);
+    textMenu.innerHTML = "Select the monster you want to buy:";
+    removeButtons("sprites3");
+
+    createButtons("sprites3", 16, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 }
+
+let bought = 0;
 
 function createButtons(containerId, buttonCount, monsterIdArray) {
     const monsterArray = new Array(buttonCount);
@@ -525,15 +529,41 @@ function createButtons(containerId, buttonCount, monsterIdArray) {
             image.alt = "Button Image";
             image.classList.add("extra-monster-image");
 
-            spriteContainer.appendChild(button1);
-            button1.addEventListener("click", () => {
-                console.log("Inner button clicked");
-                setDeployedMonster(monster, losingPlayer);
-            });
-        });
+            if (losingPlayer == 1 && bought == 0) {
+                bought = 1;
+                player1.total -= monster.value;
+                indexes.push(monster.id);
+                document.getElementById("textbox1").innerText = "$" + player1.total;
+                removeButtons("sprites1");
+                player1 = new Player(player1.total, createButtons("sprites1", ++numMonsters1, indexes, monsterData));
+                
+                setDeployedMonster(createMonster(indexes[numMonsters1 - 1], monsterData, moveData), 1);
+            }
+            else if (losingPlayer == 1 && bought == 1) {
+                document.getElementById("textbox1").innerText = "$" + player1.total;
+                removeButtons("sprites1");
+                player1 = new Player(player1.total, createButtons("sprites1", numMonsters1, indexes, monsterData));
+                
+                setDeployedMonster(monster, 1);
+            }
+            else if (losingPlayer == 2 && bought == 0) {
+                bought = 1;
+                player2.total -= monster.value;
+                indexes2.push(monster.id);
+                document.getElementById("textbox2").innerText = "$" + player2.total;
+                removeButtons("sprites2");
+                player2 = new Player(player2.total, createButtons("sprites2", ++numMonsters2, indexes2, monsterData));
+                
+                setDeployedMonster(createMonster(indexes2[numMonsters2 - 1], monsterData, moveData), 2);
+            }
+            else if (losingPlayer == 2 && bought == 1) {
+                document.getElementById("textbox2").innerText = "$" + player2.total;
+                removeButtons("sprites2");
+                player2 = new Player(player2.total, createButtons("sprites2", numMonsters2, indexes2, monsterData));
+                
+                setDeployedMonster(monster, 2);
+            }
 
-        button.addEventListener("click", () => {
-            console.log("Outer button clicked");
             closePopupMenu();
         });
 
@@ -571,17 +601,6 @@ const noButton = document.getElementById('no');
 noButton.addEventListener('click', exchangeMonsterNo);
 
 function buyNewMonster() {
-    const monsterValue = 16;
-
-    if (losingPlayer == 1) {
-        player1.total -= monsterValue; //Need to allow user to search list of monsters
-        //Add monster to assets
-    }
-    else {
-        player2.total -= monsterValue //Need to allow user to search list of monsters
-        //Add monster to assets
-    }
-
     closePopup();
     closePopupForSale();
     openPopupMenu();
